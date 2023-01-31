@@ -18,8 +18,6 @@ interface MainState
 {
 }
 
-
-
 export class Main extends Component<MainProps, MainState>
 {
     constructor(props: MainProps)
@@ -30,14 +28,9 @@ export class Main extends Component<MainProps, MainState>
     public render(): JSX.Element
     {
         return (
-            <Hello message="React TypeScript Webpack Starter">
-	        <DataGrid columns={columns} rows={rows} />;  
-                <div className="features">
-                    <div>Webpack 5 + HMR</div>
-                    <div>TypeScript + React</div>
-                    <div>SCSS + Autoprefixing</div>
-                </div>
-            </Hello>
+	    <div style={{width:'100%'}}>
+	        <DataGrid columns={columns} rows={rows} />
+	    </div>
         );
     }
 }
