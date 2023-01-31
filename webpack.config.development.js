@@ -13,7 +13,15 @@ module.exports = (env, options) =>
         // Target must be set to web for hmr to work with .browserlist
         // https://github.com/webpack/webpack-dev-server/issues/2758#issuecomment-710086019
         target: "web",
+	    resolve: {
+		// alias: {
+		//     lodash: resolve('./node_modules/lodash-es')
+		// },
+		extensions: ['.js', '.ts', '.tsx']
+	    },
+
         module: {
+
             rules: [
                 {
                     test: /\.tsx?$/,
@@ -40,6 +48,22 @@ module.exports = (env, options) =>
                         "sass-loader"
                     ],
                 },
+		{
+		    test: /\.css$/,
+		    use: [
+			//isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+			'style-loader',
+			'css-loader',
+			{
+			    loader: 'postcss-loader',
+			    options: {
+				postcssOptions: {
+				    plugins: ['postcss-nested']
+				}
+			    }
+			}
+		    ]
+		},
                 {
                     test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
                     type: "javascript/auto",

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { App } from "./App";
 import { Hello } from "./components/Hello";
+import 'react-data-grid/lib/styles.css';
+import DataGrid from 'react-data-grid';
 
 export interface MainProps
 {
@@ -10,6 +12,18 @@ export interface MainProps
 interface MainState 
 {
 }
+
+
+const columns = [
+  { key: 'id', name: 'ID' },
+  { key: 'title', name: 'Title' }
+];
+
+const rows = [
+  { id: 0, title: 'Example' },
+  { id: 1, title: 'Demo' }
+];
+
 
 export class Main extends Component<MainProps, MainState>
 {
@@ -22,7 +36,7 @@ export class Main extends Component<MainProps, MainState>
     {
         return (
             <Hello message="React TypeScript Webpack Starter">
-	    <h1> Paddy </h1>
+	        <DataGrid columns={columns} rows={rows} />;  
                 <div className="features">
                     <div>Webpack 5 + HMR</div>
                     <div>TypeScript + React</div>
