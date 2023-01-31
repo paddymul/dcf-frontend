@@ -22,6 +22,7 @@ export class Main extends Component<MainProps, MainState>
     {
         return (
             <Hello message="React TypeScript Webpack Starter">
+	    <h1> Paddy </h1>
                 <div className="features">
                     <div>Webpack 5 + HMR</div>
                     <div>TypeScript + React</div>
