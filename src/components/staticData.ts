@@ -17,7 +17,7 @@ const convertTableDF = (tdf:any) => {
       return [retColumns, tdf.data]
 }
 //print(sdf.to_json(orient='table', indent=2))
-const tableDF = {
+export const tableDf = {
   "schema":{
     "fields":[
       { "name":"index",                  "type":"integer" },
@@ -97,4 +97,5 @@ const tableDF = {
     }
   ]
 }
-export const [columns, rows] = convertTableDF(tableDF)
+
+export const [columns, rows] = convertTableDF(tableDf)
