@@ -53,8 +53,8 @@ export function ColumnEditor(props:any) {
 }
 
 
-export function CommandDisplayer(
-  colState:any) {
+export function CommandDisplayer(props:any) {
+  const colState:any = props.colState
 
 
   const columnName = "fooCol"
@@ -67,9 +67,8 @@ export function CommandDisplayer(
   }
  
     return (
-     	   <div style={{width:'100%',  height:'30px', border:'1px solid green'}}>
-	       <h1> paddy </h1>
-	       <pre>{JSON.stringify(commands)}</pre>
+     	   <div style={{width:'100%',   border:'1px solid orange'}}>
+	       <pre style={{border:'1px solid gray', height:'50px'}}>{JSON.stringify(commands)}</pre>
            </div>)
 }
 
@@ -98,10 +97,10 @@ export function ColumnsEditor({ schema }) {
    console.log("setColumnProps", setColumnProps, typeof setColumnProps)	
    //              <ColumnEditor colState={columnProps} colStateChanged={(newObj:any) => setColumnProps(newObj)}/>
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
-           <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
               <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
-	      <ColumnList schema={schema}/>
 	      <CommandDisplayer colState={columnProps}/>
+   	      <ColumnList schema={schema}/>
+
 	</div>)
 }
 
