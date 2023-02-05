@@ -84,9 +84,9 @@ export function CommandDisplayer(props:any) {
 //@ts-ignore
 function ColumnList({ schema }) {
   const listItems = schema.fields.map((f:any) =>
-    <div style={{border:"1px solid black", padding:"3px"}}>
-        <dt key={f.name}>{f.name}</dt>
-        <dd key={f.name}>{f.type}</dd>
+    <div key={f.name} style={{border:"1px solid black", padding:"3px"}}>
+        <dt>{f.name}</dt>
+        <dd>{f.type}</dd>
     </div>);
 
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
@@ -100,13 +100,12 @@ function ColumnList({ schema }) {
 export function ColumnsEditor({ schema }) {
   console.log("schema", schema)
   const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
-  //setColumnProps({drop:true, fillna:false})
-   //console.log("colStateChanged", colStateChanged, typeof colStateChanged)	
-   console.log("setColumnProps", setColumnProps, typeof setColumnProps)	
 
-//   	      <ColumnList schema={schema}/>
+
+//
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
               <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
+   	      <ColumnList schema={schema}/>
 	      <CommandDisplayer colState={columnProps}/>
 
 
