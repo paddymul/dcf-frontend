@@ -29,8 +29,13 @@ export function ColumnEditor(props:any) {
 
    const handleDropChanged = () => {
      colStateChanged({...colState, drop:!colState.drop}) }  
-   const handleFillnaChanged = () => {
+   const fillNaChanged = (e:any) => {
      colStateChanged({...colState, fillna:!colState.fillna}) }  
+   const fillNaValChanged = (e:any) => {
+     //console.log("fillNA changed", e.target.value, e)
+     colStateChanged({...colState, fillNaVal:e.target.value}) }  
+
+
 
    return (
      	   <div style={{width:'100%',  height:'30px', border:'1px solid green'}}>
@@ -43,9 +48,12 @@ export function ColumnEditor(props:any) {
 	       </label>
 	       <label>
                    <input
+                       value={colState.fillNaVal}
+		       onChange={fillNaValChanged}/>
+                   <input
 		       type="checkbox"
-                       checked={colState.fillna}
-		       onChange={handleFillnaChanged}/>
+                       checked={colState.fillNa}
+		       onChange={fillNaChanged}/>
 		    FillNa
 	       </label>
      </div>
@@ -63,7 +71,7 @@ export function CommandDisplayer(props:any) {
       commands.push(['drop', columnName])
   }
   if (colState.fillna) {
-      commands.push(['fillna', columnName, 10])
+      commands.push(['fillna', columnName, colState.fillNaVal])
   }
  
     return (
@@ -91,15 +99,16 @@ function ColumnList({ schema }) {
 //@ts-ignore
 export function ColumnsEditor({ schema }) {
   console.log("schema", schema)
-  const [columnProps, setColumnProps] = useState({drop:false, fillna:false })	
+  const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
   //setColumnProps({drop:true, fillna:false})
    //console.log("colStateChanged", colStateChanged, typeof colStateChanged)	
    console.log("setColumnProps", setColumnProps, typeof setColumnProps)	
-   //              <ColumnEditor colState={columnProps} colStateChanged={(newObj:any) => setColumnProps(newObj)}/>
+
+//   	      <ColumnList schema={schema}/>
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
               <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
 	      <CommandDisplayer colState={columnProps}/>
-   	      <ColumnList schema={schema}/>
+
 
 	</div>)
 }
