@@ -9,7 +9,7 @@ const origRows = [
   { id: 1, title: 'Demo' }
 ];
 
-const convertTableDF = (tdf:any) => {
+export const convertTableDF = (tdf:any) => {
       const fields = tdf.schema.fields;
       const retColumns = fields.map((f:any) => {
          return { key:f.name, name: f.name }

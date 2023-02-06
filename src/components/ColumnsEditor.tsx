@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import _ from 'lodash';
 
 
@@ -107,6 +107,8 @@ export function ColumnsEditor({ schema }) {
 
   const baseState = {drop:false, fillNa:false, fillNaVal:"zsdf" }
   const totalProps:Record<string, any> = {}
+
+
   schema.fields.map((f:any) => {
   	totalProps[f.name] = baseState
   })	
