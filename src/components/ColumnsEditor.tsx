@@ -60,23 +60,26 @@ export function ColumnEditor(props:any) {
   )
 }
 
-
-export function CommandDisplayer(props:any) {
-  const colState:any = props.colState
-
-
-  const columnName = "fooCol"
-  const commands:any[] = []
-  if (colState.drop) {
-      commands.push(['drop', columnName])
-  }
-  if (colState.fillna) {
-      commands.push(['fillna', columnName, colState.fillNaVal])
-  }
+//@ts-ignore
+export function CommandDisplayer({fullProps}) {
+  const filledCommands = _.flatten(_.keys(fullProps).map((columnName) => {
+  	const colState = fullProps[columnName]
+	if(colState.drop === false && colState.fillna === false){
+	    return []
+	}
+	const commands: any[] = [];
+	if (colState.drop) {
+	   commands.push(['drop', columnName])
+	}
+	if (colState.fillna) {
+	      commands.push(['fillna', columnName, colState.fillNaVal])
+	}
+	return commands
+  }))
  
     return (
      	   <div style={{width:'100%',   border:'1px solid orange'}}>
-	       <pre style={{border:'1px solid gray', height:'50px'}}>{JSON.stringify(commands)}</pre>
+	       <pre style={{border:'1px solid gray', height:'50px'}}>{JSON.stringify(filledCommands)}</pre>
            </div>)
 }
 
@@ -123,7 +126,7 @@ export function ColumnsEditor({ schema }) {
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
               <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
    	      <ColumnList schema={schema} fullProps={fullProps} deepSet={deepSetColumnProps} />
-	      <CommandDisplayer colState={columnProps}/>
+	      <CommandDisplayer fullProps={fullProps}/>
 	</div>)
 }
 
