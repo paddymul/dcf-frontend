@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-
+import _ from 'lodash';
 
 
 // onChange={handleChange('drop')}
@@ -81,11 +81,17 @@ export function CommandDisplayer(props:any) {
 }
 
 //@ts-ignore
-function ColumnList({ schema }) {
+function ColumnList({ schema, fullProps, deepSet }) {
+  const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
+
+
   const listItems = schema.fields.map((f:any) =>
     <div key={f.name} style={{border:"1px solid black", padding:"3px"}}>
         <dt>{f.name}</dt>
-        <dd>{f.type}</dd>
+        <dd>{f.type}
+
+              <ColumnEditor key={f.name} colState={fullProps[f.name]} colStateChanged={deepSet([f.name])}/>	
+	      </dd>
     </div>);
 
   return (<div style={{width:'100%', outline:'3px solid blue'}}>
@@ -97,10 +103,26 @@ function ColumnList({ schema }) {
 export function ColumnsEditor({ schema }) {
   console.log("schema", schema)
   const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
+  const baseState = {drop:false, fillNa:false, fillNaVal:"zsdf" }
+  const totalProps:Record<string, any> = {}
+  schema.fields.map((f:any) => {
+  	totalProps[f.name] = baseState
+  })	
+
+  const [fullProps, setFullProps] = useState(totalProps)
+  const deepSetColumnProps = (field:string) => {
+      const retFunc = (newSingleColumnProps:any) => {
+            const baseProps = _.cloneDeep(fullProps)
+	    baseProps[field] = newSingleColumnProps
+	    setFullProps(baseProps)
+      }
+      return retFunc
+  }
+
 
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
               <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
-   	      <ColumnList schema={schema}/>
+   	      <ColumnList schema={schema} fullProps={fullProps} deepSet={deepSetColumnProps} />
 	      <CommandDisplayer colState={columnProps}/>
 	</div>)
 }
