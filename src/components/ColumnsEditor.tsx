@@ -30,7 +30,7 @@ export function ColumnEditor(props:any) {
    const handleDropChanged = () => {
      colStateChanged({...colState, drop:!colState.drop}) }  
    const fillNaChanged = (e:any) => {
-     colStateChanged({...colState, fillna:!colState.fillna}) }  
+     colStateChanged({...colState, fillNa:!colState.fillNa}) }  
    const fillNaValChanged = (e:any) => {
      //console.log("fillNA changed", e.target.value, e)
      colStateChanged({...colState, fillNaVal:e.target.value}) }  
@@ -71,7 +71,7 @@ export function CommandDisplayer({fullProps}) {
 	if (colState.drop) {
 	   commands.push(['drop', columnName])
 	}
-	if (colState.fillna) {
+	if (colState.fillNa) {
 	      commands.push(['fillna', columnName, colState.fillNaVal])
 	}
 	return commands
@@ -104,8 +104,7 @@ function ColumnList({ schema, fullProps, deepSet }) {
 
 //@ts-ignore
 export function ColumnsEditor({ schema }) {
-  console.log("schema", schema)
-  const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
+
   const baseState = {drop:false, fillNa:false, fillNaVal:"zsdf" }
   const totalProps:Record<string, any> = {}
   schema.fields.map((f:any) => {
@@ -124,7 +123,6 @@ export function ColumnsEditor({ schema }) {
 
 
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
-              <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
    	      <ColumnList schema={schema} fullProps={fullProps} deepSet={deepSetColumnProps} />
 	      <CommandDisplayer fullProps={fullProps}/>
 	</div>)
