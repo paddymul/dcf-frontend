@@ -80,7 +80,6 @@ export function CommandDisplayer(props:any) {
            </div>)
 }
 
-
 //@ts-ignore
 function ColumnList({ schema }) {
   const listItems = schema.fields.map((f:any) =>
@@ -89,26 +88,20 @@ function ColumnList({ schema }) {
         <dd>{f.type}</dd>
     </div>);
 
-  return (<div style={{width:'100%', outline:'3px solid blue',   }}>
+  return (<div style={{width:'100%', outline:'3px solid blue'}}>
               <dl style={{display:"flex"}}>{listItems}</dl>
 	  </div>)
 }
-
-
 
 //@ts-ignore
 export function ColumnsEditor({ schema }) {
   console.log("schema", schema)
   const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
 
-
-//
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
               <ColumnEditor colState={columnProps} colStateChanged={setColumnProps}/>
    	      <ColumnList schema={schema}/>
 	      <CommandDisplayer colState={columnProps}/>
-
-
 	</div>)
 }
 
