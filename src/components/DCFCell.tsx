@@ -38,21 +38,31 @@ export function TransformedDf({instructions}) {
 }
 
 //@ts-ignore
+export function DFViewer({df}) {
+  const [localColumns, localRows] = convertTableDF(tableDf)
+  return (
+    <div style={{width:'100%'}}>
+      <DataGrid columns={localColumns} rows={localRows} />
+    </div>
+  );
+}
+
+//@ts-ignore
 export function DCFCell() {
 
   const [schema, setSchema] = useState({})
-  const [columns, setColumns] = useState([])
-  const [rows, setRows]  = useState([])
+  const [origDf, setOrigDf] = useState([])
   
   useEffect(() => {
   	       fetch('http://localhost:8080/static-json/base-df.json')
 	        .then(async (response) => {
 		   console.log(response)
 		   const tableDf = await response.json()
+		   setOrigDf(tableDf)
 		   setSchema(tableDf.schema)
-		   const [localColumns, localRows] = convertTableDF(tableDf)
-		   setColumns(localColumns)
-		   setRows(localRows)
+		   // const [localColumns, localRows] = convertTableDF(tableDf)
+		   // setColumns(localColumns)
+		   // setRows(localRows)
 		   
 		   }
  );
@@ -61,7 +71,7 @@ export function DCFCell() {
         return (
 	    <div style={{width:'100%'}}>
 	        <ColumnsEditor schema={tableDf.schema} />
-	        <DataGrid columns={columns} rows={rows} />
+		<DFViewer df={origDf} />
 	    </div>
         );
 
