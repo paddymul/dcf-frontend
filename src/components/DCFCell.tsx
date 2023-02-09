@@ -5,11 +5,6 @@ import { tableDf, convertTableDF, columns, rows } from "./staticData";
 import { DFViewer } from "./DFViewer"
 import { requestDf } from "./utils"
 
-//@ts-ignore
-const transformInstructions = (raw) => {
-      return JSON.stringify(raw[0])
-
-}
 
 
 //@ts-ignore
@@ -40,7 +35,8 @@ export function TransformedDf({instructions}) {
 export function DCFCell() {
   const [origDf, setOrigDf] = useState(tableDf)
   useEffect(() => {
-     	        requestDf('http://localhost:8080/static-json/base-df.json', setOrigDf)
+     	        requestDf('http://localhost:5000/dcf/df/1?slice_start=3&slice_end=8',
+		setOrigDf)
  }, []);
         return (
 	    <div style={{width:'100%'}}>

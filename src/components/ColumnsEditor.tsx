@@ -101,10 +101,8 @@ export function TransformViewer({ filledCommands }) {
   const instructions = transformInstructions(filledCommands)
   console.log("filledCommands", filledCommands)
   console.log("instructions", instructions)
-  useEffect(() => {
-    requestDf(
+  requestDf(
         `http://localhost:5000/dcf/transform_df/1?instructions=${instructions}&slice_start=3&slice_end=50`, setTransDf);
-  }, []);
   return (<DFViewer df={transDf} />);
 }
 

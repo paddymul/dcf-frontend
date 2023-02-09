@@ -9,7 +9,7 @@ export const propsToCommands = (fullProps) => {
 	}
 	const commands: any[] = [];
 	if (colState.drop) {
-	  commands.push([{symbol:'drop'}, {'symbol': 'df'}, columnName])
+	  commands.push([{symbol:'dropcol'}, {'symbol': 'df'}, columnName])
 	}
 	if (colState.fillNa) {
 	      commands.push([{symbol:'fillna'}, columnName, colState.fillNaVal])
