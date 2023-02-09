@@ -1,10 +1,8 @@
 import React, { Component, useState, useEffect } from "react";
 import _ from 'lodash';
-import { ColumnsEditor } from "./ColumnsEditor";
+import { ColumnsEditor } from "./ColumnsEditor"
 import { tableDf, convertTableDF, columns, rows } from "./staticData";
-import 'react-data-grid/lib/styles.css';
-import DataGrid from 'react-data-grid';
-
+import { DFViewer } from "./DFViewer"
 
 //@ts-ignore
 const transformInstructions = (raw) => {
@@ -38,19 +36,10 @@ export function TransformedDf({instructions}) {
 }
 
 //@ts-ignore
-export function DFViewer({df}) {
-  const [localColumns, localRows] = convertTableDF(tableDf)
-  return (
-    <div style={{width:'100%'}}>
-      <DataGrid columns={localColumns} rows={localRows} />
-    </div>
-  );
-}
-
-//@ts-ignore
 export function DCFCell() {
 
-  const [origDf, setOrigDf] = useState({schema:{fields:[]}})
+
+  const [origDf, setOrigDf] = useState(tableDf)
   
   useEffect(() => {
   	       fetch('http://localhost:8080/static-json/base-df.json')
