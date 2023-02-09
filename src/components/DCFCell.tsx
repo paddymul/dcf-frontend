@@ -5,6 +5,14 @@ import { tableDf, convertTableDF, columns, rows } from "./staticData";
 import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
 
+
+//@ts-ignore
+const transformInstructions = (raw) => {
+      return JSON.stringify(raw[0])
+
+}
+
+
 //@ts-ignore
 export function TransformedDf({instructions}) {
 
