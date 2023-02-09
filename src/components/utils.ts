@@ -9,7 +9,7 @@ export const propsToCommands = (fullProps) => {
 	}
 	const commands: any[] = [];
 	if (colState.drop) {
-	   commands.push([{symbol:'drop'}, columnName])
+	  commands.push([{symbol:'drop'}, {'symbol': 'df'}, columnName])
 	}
 	if (colState.fillNa) {
 	      commands.push([{symbol:'fillna'}, columnName, colState.fillNaVal])
@@ -21,9 +21,9 @@ export const propsToCommands = (fullProps) => {
 
 
 //@ts-ignore
-export const requestDf = async(url, setCallBack) => {
+export const requestDf = (url, setCallBack) => {
   const retPromise =
-    fetch('http://localhost:8080/static-json/base-df.json')
+    fetch(url)
       .then(async (response) => {
 	console.log(response)
 	const tableDf = await response.json()

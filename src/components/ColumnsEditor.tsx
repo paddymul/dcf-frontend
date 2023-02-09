@@ -1,5 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
-import { propsToCommands } from "./utils";
+import { tableDf } from "./staticData";
+import { propsToCommands, requestDf } from "./utils";
+import { DFViewer } from "./DFViewer"
 import _ from 'lodash';
 
 
@@ -74,9 +76,6 @@ function ColumnList({ fullProps, deepSet }) {
   const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
 
   console.log("fullProps", fullProps)
-  const throwAway = _.keys(fullProps).map((name:any) => {
-     console.log("throwAway", name, fullProps[name])
-  })
   const listItems = _.keys(fullProps).map((name:any) =>
     <div key={name} style={{border:"1px solid black", padding:"3px"}}>
         <dt>{name}</dt>
@@ -89,6 +88,38 @@ function ColumnList({ fullProps, deepSet }) {
               <dl style={{display:"flex"}}>{listItems}</dl>
 	  </div>)
 }
+
+//@ts-ignore
+const transformInstructions = (raw) => {
+      return JSON.stringify(raw[0])
+}
+
+
+//@ts-ignore
+export function TransformViewer({ filledCommands }) {
+  const [transDf, setTransDf] = useState(tableDf)
+  const instructions = transformInstructions(filledCommands)
+  console.log("filledCommands", filledCommands)
+  console.log("instructions", instructions)
+  useEffect(() => {
+    requestDf(
+        `http://localhost:5000/dcf/transform_df/1?instructions=${instructions}&slice_start=3&slice_end=50`, setTransDf);
+  }, []);
+  return (<DFViewer df={transDf} />);
+}
+
+
+
+//@ts-ignore
+export function DependentTabs({ fullProps }) {
+  const filledCommands = propsToCommands(fullProps)
+  return (<div style={{width:'100%', outline:'3px solid blue',   }}>
+ 	      <CommandDisplayer filledCommands={ filledCommands }/>
+	      <TransformViewer filledCommands={ filledCommands }/>
+	</div>)
+}
+
+
 
 //@ts-ignore
 export function ColumnsEditor({ df }) {
@@ -111,10 +142,10 @@ export function ColumnsEditor({ df }) {
       return retFunc
   }
 
-  const filledCommands = propsToCommands(fullProps)
+ 
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
-   	      <ColumnList  fullProps={totalProps} deepSet={deepSetColumnProps} />
-	      <CommandDisplayer filledCommands={ filledCommands }/>
+   	      <ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} />
+	      <DependentTabs fullProps={fullProps}/>
 	</div>)
 }
 
