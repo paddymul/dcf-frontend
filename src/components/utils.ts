@@ -1,4 +1,5 @@
 import _ from 'lodash';
+
 //@ts-ignore
 export const propsToCommands = (fullProps) => {
  const filledCommands = _.flatten(_.keys(fullProps).map((columnName) => {
@@ -16,4 +17,17 @@ export const propsToCommands = (fullProps) => {
 	return commands
   }))
  return filledCommands
+}
+
+
+//@ts-ignore
+export const requestDf = async(url, setCallBack) => {
+  const retPromise =
+    fetch('http://localhost:8080/static-json/base-df.json')
+      .then(async (response) => {
+	console.log(response)
+	const tableDf = await response.json()
+	setCallBack(tableDf)
+      });
+  return retPromise
 }

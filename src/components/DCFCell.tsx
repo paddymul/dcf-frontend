@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { ColumnsEditor } from "./ColumnsEditor"
 import { tableDf, convertTableDF, columns, rows } from "./staticData";
 import { DFViewer } from "./DFViewer"
+import { requestDf } from "./utils"
 
 //@ts-ignore
 const transformInstructions = (raw) => {
@@ -37,20 +38,10 @@ export function TransformedDf({instructions}) {
 
 //@ts-ignore
 export function DCFCell() {
-
-
   const [origDf, setOrigDf] = useState(tableDf)
-  
   useEffect(() => {
-  	       fetch('http://localhost:8080/static-json/base-df.json')
-	        .then(async (response) => {
-		   console.log(response)
-		   const tableDf = await response.json()
-		   setOrigDf(tableDf)
-		   }
- );
+     	        requestDf('http://localhost:8080/static-json/base-df.json', setOrigDf)
  }, []);
-
         return (
 	    <div style={{width:'100%'}}>
 	        <ColumnsEditor df={origDf} />
