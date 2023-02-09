@@ -98,11 +98,25 @@ const transformInstructions = (raw) => {
 //@ts-ignore
 export function TransformViewer({ filledCommands }) {
   const [transDf, setTransDf] = useState(tableDf)
+
+  const URLBase = "http://localhost:5000/dcf/"
+  const sliceArgs = "slice_start=3&slice_end=50"
+  const emptyUrl = `${URLBase}df/1?${sliceArgs}`
+
+  useEffect(() => {
+     
   const instructions = transformInstructions(filledCommands)
   console.log("filledCommands", filledCommands)
   console.log("instructions", instructions)
-  requestDf(
-        `http://localhost:5000/dcf/transform_df/1?instructions=${instructions}&slice_start=3&slice_end=50`, setTransDf);
+
+  const transUrl = `${URLBase}transform_df/1?instructions=${instructions}&${sliceArgs}`
+  if(filledCommands.length == 0) {
+    requestDf(emptyUrl, setTransDf);
+  }
+  else {
+   requestDf(transUrl, setTransDf);
+  }
+  }, [filledCommands]);
   return (<DFViewer df={transDf} />);
 }
 
