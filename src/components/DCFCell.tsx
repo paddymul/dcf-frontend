@@ -50,8 +50,7 @@ export function DFViewer({df}) {
 //@ts-ignore
 export function DCFCell() {
 
-  const [schema, setSchema] = useState({})
-  const [origDf, setOrigDf] = useState([])
+  const [origDf, setOrigDf] = useState({schema:{fields:[]}})
   
   useEffect(() => {
   	       fetch('http://localhost:8080/static-json/base-df.json')
@@ -59,18 +58,13 @@ export function DCFCell() {
 		   console.log(response)
 		   const tableDf = await response.json()
 		   setOrigDf(tableDf)
-		   setSchema(tableDf.schema)
-		   // const [localColumns, localRows] = convertTableDF(tableDf)
-		   // setColumns(localColumns)
-		   // setRows(localRows)
-		   
 		   }
  );
  }, []);
 
         return (
 	    <div style={{width:'100%'}}>
-	        <ColumnsEditor schema={tableDf.schema} />
+	        <ColumnsEditor df={origDf} />
 		<DFViewer df={origDf} />
 	    </div>
         );

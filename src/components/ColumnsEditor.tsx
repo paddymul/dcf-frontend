@@ -70,15 +70,18 @@ export function CommandDisplayer({filledCommands}) {
 }
 
 //@ts-ignore
-function ColumnList({ schema, fullProps, deepSet }) {
+function ColumnList({ fullProps, deepSet }) {
   const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
 
-
-  const listItems = schema.fields.map((f:any) =>
-    <div key={f.name} style={{border:"1px solid black", padding:"3px"}}>
-        <dt>{f.name}</dt>
-        <dd>{f.type}
-              <ColumnEditor key={f.name} colState={fullProps[f.name]} colStateChanged={deepSet([f.name])}/>
+  console.log("fullProps", fullProps)
+  const throwAway = _.keys(fullProps).map((name:any) => {
+     console.log("throwAway", name, fullProps[name])
+  })
+  const listItems = _.keys(fullProps).map((name:any) =>
+    <div key={name} style={{border:"1px solid black", padding:"3px"}}>
+        <dt>{name}</dt>
+        <dd>{fullProps[name].type}
+              <ColumnEditor key={name} colState={fullProps[name]} colStateChanged={deepSet([name])}/>
 	      </dd>
     </div>);
 
@@ -88,15 +91,15 @@ function ColumnList({ schema, fullProps, deepSet }) {
 }
 
 //@ts-ignore
-export function ColumnsEditor({ schema }) {
+export function ColumnsEditor({ df }) {
 
-  const baseState = {drop:false, fillNa:false, fillNaVal:"zsdf" }
+  const schema = df.schema;
+  const baseState = {drop:false, fillNa:false, fillNaVal:"zsdf", type:'foo' }
   const totalProps:Record<string, any> = {}
-
-
   schema.fields.map((f:any) => {
   	totalProps[f.name] = baseState
-  })	
+  })
+  console.log("totalProps", totalProps)
 
   const [fullProps, setFullProps] = useState(totalProps)
   const deepSetColumnProps = (field:string) => {
@@ -110,7 +113,7 @@ export function ColumnsEditor({ schema }) {
 
   const filledCommands = propsToCommands(fullProps)
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
-   	      <ColumnList schema={schema} fullProps={fullProps} deepSet={deepSetColumnProps} />
+   	      <ColumnList  fullProps={totalProps} deepSet={deepSetColumnProps} />
 	      <CommandDisplayer filledCommands={ filledCommands }/>
 	</div>)
 }
