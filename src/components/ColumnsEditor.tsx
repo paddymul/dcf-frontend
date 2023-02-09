@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+import { propsToCommands } from "./utils";
 import _ from 'lodash';
 
 
@@ -61,22 +62,7 @@ export function ColumnEditor(props:any) {
 }
 
 //@ts-ignore
-export function CommandDisplayer({fullProps}) {
-  const filledCommands = _.flatten(_.keys(fullProps).map((columnName) => {
-  	const colState = fullProps[columnName]
-	if(colState.drop === false && colState.fillna === false){
-	    return []
-	}
-	const commands: any[] = [];
-	if (colState.drop) {
-	   commands.push(['drop', columnName])
-	}
-	if (colState.fillNa) {
-	      commands.push(['fillna', columnName, colState.fillNaVal])
-	}
-	return commands
-  }))
- 
+export function CommandDisplayer({filledCommands}) {
     return (
      	   <div style={{width:'100%',   border:'1px solid orange'}}>
 	       <pre style={{border:'1px solid gray', height:'50px'}}>{JSON.stringify(filledCommands)}</pre>
@@ -92,8 +78,7 @@ function ColumnList({ schema, fullProps, deepSet }) {
     <div key={f.name} style={{border:"1px solid black", padding:"3px"}}>
         <dt>{f.name}</dt>
         <dd>{f.type}
-
-              <ColumnEditor key={f.name} colState={fullProps[f.name]} colStateChanged={deepSet([f.name])}/>	
+              <ColumnEditor key={f.name} colState={fullProps[f.name]} colStateChanged={deepSet([f.name])}/>
 	      </dd>
     </div>);
 
@@ -123,10 +108,10 @@ export function ColumnsEditor({ schema }) {
       return retFunc
   }
 
-
+  const filledCommands = propsToCommands(fullProps)
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
    	      <ColumnList schema={schema} fullProps={fullProps} deepSet={deepSetColumnProps} />
-	      <CommandDisplayer fullProps={fullProps}/>
+	      <CommandDisplayer filledCommands={ filledCommands }/>
 	</div>)
 }
 
