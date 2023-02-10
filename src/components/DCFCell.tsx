@@ -16,7 +16,7 @@ export function DCFCell() {
         return (
 	    <div style={{width:'100%', height:"100%"}}>
 	        <h1 style={{fontSize:"1.25rem", margin:"5px", textAlign:"left"}}>Data Cleaning Framework </h1>
-	        <div style={{height:"20%"}}>
+	        <div style={{height:"200px", overflow:"hidden"}}>
 		<DFViewer df={origDf} />
 		</div>
 	        <ColumnsEditor df={origDf} />
