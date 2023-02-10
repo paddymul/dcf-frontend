@@ -5,18 +5,6 @@ import { DFViewer } from "./DFViewer"
 import _ from 'lodash';
 
 
-// onChange={handleChange('drop')}
-// onChange={handleChange('fillna')}	
-// interface ColumnState
-// {
-// drop:boolean
-// rename:false|string
-// fillna:false|string
-
-// }
-
-
-
 interface ColumnState {
     drop:boolean
     fillna:boolean
@@ -24,21 +12,15 @@ interface ColumnState {
 
 
 export function ColumnEditor(props:any) {
-
-
  const colState:any = props.colState
  const colStateChanged:any = props.colStateChanged
-
 
    const handleDropChanged = () => {
      colStateChanged({...colState, drop:!colState.drop}) }  
    const fillNaChanged = (e:any) => {
      colStateChanged({...colState, fillNa:!colState.fillNa}) }  
    const fillNaValChanged = (e:any) => {
-     //console.log("fillNA changed", e.target.value, e)
      colStateChanged({...colState, fillNaVal:e.target.value}) }  
-
-
 
    return (
      	   <div style={{width:'100%',  height:'30px', border:'1px solid green'}}>
@@ -140,7 +122,9 @@ export function ColumnsEditor({ df }) {
   const baseState = {drop:false, fillNa:false, fillNaVal:"zsdf", type:'foo' }
   const totalProps:Record<string, any> = {}
   schema.fields.map((f:any) => {
-  	totalProps[f.name] = baseState
+        const props = _.clone(baseState)
+	props.type = f.type
+  	totalProps[f.name] = props
   })
   console.log("totalProps", totalProps)
 
