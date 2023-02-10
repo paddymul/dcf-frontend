@@ -40,8 +40,9 @@ export function DCFCell() {
  }, []);
         return (
 	    <div style={{width:'100%'}}>
-	        <ColumnsEditor df={origDf} />
 		<DFViewer df={origDf} />
+	        <ColumnsEditor df={origDf} />
+
 	    </div>
         );
 
