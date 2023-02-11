@@ -7,8 +7,8 @@ import { convertTableDF } from "./staticData";
 export function DFViewer({df}) {
   const [localColumns, localRows] = convertTableDF(df)
   return (
-    <div style={{width:'100%',  "minHeight":"100px",  maxHeight:"200px"}}>
-      <DataGrid columns={localColumns} rows={localRows} />
+    <div style={{width:'100%',  }}>
+      <DataGrid style={{height:"300px"}} columns={localColumns} rows={localRows} />
     </div>
   );
 }
