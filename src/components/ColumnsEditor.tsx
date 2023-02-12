@@ -73,7 +73,7 @@ function ColumnList({ fullProps, deepSet }) {
 
 //@ts-ignore
 const transformInstructions = (raw) => {
-      return JSON.stringify(raw[0])
+      return JSON.stringify([{'symbol':'begin'}, ...raw])
 }
 
 
