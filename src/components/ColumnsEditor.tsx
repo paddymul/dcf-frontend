@@ -23,7 +23,7 @@ export function ColumnEditor(props:any) {
      colStateChanged({...colState, fillNaVal:e.target.value}) }  
 
    return (
-     	   <div style={{width:'100%',  height:'30px', border:'1px solid green'}}>
+     	   <div className="column-editor" style={{width:'100%',  clear:'both', height:'30px', border:'1px solid green'}}>
 	       <label>
                    <input
 		       type="checkbox"
@@ -45,11 +45,29 @@ export function ColumnEditor(props:any) {
   )
 }
 
+
+//@ts-ignore
+function ColumnList({ fullProps, deepSet }) {
+  const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
+
+  const listItems = _.keys(fullProps).map((name:any) =>
+    <div key={name} style={{border:"1px solid black", padding:"3px"}}>
+        <dt style={{float:"left"}} >{name}</dt>
+        <dd style={{float:"left"}} >{fullProps[name].type}</dd>
+              <ColumnEditor key={name} colState={fullProps[name]} colStateChanged={deepSet([name])}/>
+    </div>);
+
+  return (<div className="column-list" style={{width:'100%', fontSize:"1rem", outline:'3px solid blue'}}>
+              <dl style={{display:"flex", margin:0, padding:0}}>{listItems}</dl>
+	  </div>)
+}
+
+
 //@ts-ignore
 export function CommandDisplayer({filledCommands}) {
     return (
-     	   <div style={{width:'100%',   border:'1px solid orange'}}>
-	       <pre style={{border:'1px solid gray', height:'50px'}}>{JSON.stringify(filledCommands)}</pre>
+     	   <div className="command-displayer"  style={{width:'100%',   outline:'1px solid pink'}}>
+	       <pre style={{border:'1px solid gray', margin:0, minHeight:'30px'}}>{JSON.stringify(filledCommands)}</pre>
            </div>)
 }
 
@@ -83,27 +101,9 @@ export function PythonDisplayer({filledCommands}) {
   }
   }, [filledCommands]);
     return (
-     	   <div style={{width:'100%',   border:'1px solid orange'}}>
-	       <pre style={{border:'1px solid gray', height:'50px', textAlign:"left"}}>{pyString}</pre>
+     	   <div className="python-displayer" style={{width:'100%',   border:'1px solid orange'}}>
+	       <pre style={{border:'1px solid gray', margin:"0",  minHeight:"30px", textAlign:"left"}}>{pyString}</pre>
            </div>)
-}
-
-//@ts-ignore
-function ColumnList({ fullProps, deepSet }) {
-  const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
-
-  console.log("fullProps", fullProps)
-  const listItems = _.keys(fullProps).map((name:any) =>
-    <div key={name} style={{border:"1px solid black", padding:"3px"}}>
-        <dt>{name}</dt>
-        <dd>{fullProps[name].type}
-              <ColumnEditor key={name} colState={fullProps[name]} colStateChanged={deepSet([name])}/>
-	      </dd>
-    </div>);
-
-  return (<div style={{width:'100%', outline:'3px solid blue'}}>
-              <dl style={{display:"flex"}}>{listItems}</dl>
-	  </div>)
 }
 
 //@ts-ignore
@@ -134,7 +134,7 @@ export function TransformViewer({ filledCommands }) {
    requestDf(transUrl, setTransDf);
   }
   }, [filledCommands]);
-  return (<DFViewer df={transDf} />);
+  return (<div className="transform-viewer"> <DFViewer  df={transDf} /> </div>);
 }
 
 
@@ -142,7 +142,7 @@ export function TransformViewer({ filledCommands }) {
 //@ts-ignore
 export function DependentTabs({ fullProps }) {
   const filledCommands = propsToCommands(fullProps)
-  return (<div style={{width:'100%', outline:'3px solid blue',   }}>
+  return (<div className="dependent-tabs" style={{width:'100%', outline:'3px solid blue',   }}>
 
  	      <CommandDisplayer filledCommands={ filledCommands }/>
  	      <PythonDisplayer filledCommands={ filledCommands }/>
@@ -176,7 +176,7 @@ export function ColumnsEditor({ df }) {
   }
 
  
-  return (<div style={{width:'100%', outline:'3px solid blue',   }}>
+  return (<div className="columns-editor" style={{width:'100%', outline:'3px solid blue',   }}>
    	      <ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} />
 	      <DependentTabs fullProps={fullProps}/>
 	</div>)
