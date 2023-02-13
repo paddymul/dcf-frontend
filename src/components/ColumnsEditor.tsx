@@ -54,6 +54,41 @@ export function CommandDisplayer({filledCommands}) {
 }
 
 //@ts-ignore
+export function PythonDisplayer({filledCommands}) {
+  const [pyString, setPyString] = useState("")
+
+  const URLBase = "http://localhost:5000/dcf/"
+  const sliceArgs = "slice_start=3&slice_end=50"
+  const emptyUrl = `${URLBase}df/1?${sliceArgs}`
+
+  useEffect(() => {
+     
+
+  const pyCodeUrl = `${URLBase}dcf_to_py/1?instructions=${JSON.stringify(filledCommands)}`
+  if(filledCommands.length == 0) {
+     return
+  }
+  else {
+    fetch(pyCodeUrl)
+      .then(async (response) => {
+	console.log(response)
+	//@ts-ignore	
+	const fullResp = await response.json()
+	console.log("fullResp", fullResp)
+	//@ts-ignore	
+	const pyCode = fullResp['py']
+	console.log("pyCode", pyCode)
+	setPyString(pyCode)
+      });
+  }
+  }, [filledCommands]);
+    return (
+     	   <div style={{width:'100%',   border:'1px solid orange'}}>
+	       <pre style={{border:'1px solid gray', height:'50px', textAlign:"left"}}>{pyString}</pre>
+           </div>)
+}
+
+//@ts-ignore
 function ColumnList({ fullProps, deepSet }) {
   const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
 
@@ -108,7 +143,9 @@ export function TransformViewer({ filledCommands }) {
 export function DependentTabs({ fullProps }) {
   const filledCommands = propsToCommands(fullProps)
   return (<div style={{width:'100%', outline:'3px solid blue',   }}>
+
  	      <CommandDisplayer filledCommands={ filledCommands }/>
+ 	      <PythonDisplayer filledCommands={ filledCommands }/>
 	      <TransformViewer filledCommands={ filledCommands }/>
 	</div>)
 }
