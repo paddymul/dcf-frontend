@@ -14,12 +14,13 @@ export function DCFCell() {
 		setOrigDf)
  }, []);
         return (
-	    <div style={{width:'100%', height:"100%"}}>
+	    <div className="dcf-root flex flex-col" style={{width:'100%', height:"100%"}}>
 	        <h1 style={{fontSize:"1.25rem", margin:"5px", textAlign:"left"}}>Data Cleaning Framework </h1>
-	        <div className="orig-df" style={{height:"300px", overflow:"hidden"}}>
-		<DFViewer df={origDf} />
+	        <div className="orig-df flex flex-row"
+		    style={{height:"250px", overflow:"hidden"}}>
+                    <DFViewer df={origDf} />
 		</div>
-	        <ColumnsEditor df={origDf} />
+	        <ColumnsEditor  df={origDf} />
 	    </div>
         );
 

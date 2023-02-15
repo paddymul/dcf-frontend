@@ -145,11 +145,38 @@ export function TransformViewer({ filledCommands }) {
 //@ts-ignore
 export function DependentTabs({ fullProps }) {
   const filledCommands = propsToCommands(fullProps)
-  return (<div className="dependent-tabs" style={{width:'100%',  }}>
+  const [tab, _setTab] = useState('df')
+  const setTab = (tabName:string) => {
+      const retFunc = (e:any) => {
+        _setTab(tabName);
+      }
+      return retFunc
+  }
+  const baseStyle = {background:'grey'}
+  const [dfStyle, pythonStyle, commandStyle] = [_.clone(baseStyle), _.clone(baseStyle), _.clone(baseStyle)]
 
- 	      <CommandDisplayer filledCommands={ filledCommands }/>
- 	      <PythonDisplayer filledCommands={ filledCommands }/>
-	      <TransformViewer filledCommands={ filledCommands }/>
+  const activeBackground = "#261d1d"
+  if (tab === 'df') {
+    dfStyle['background'] = activeBackground
+  }
+  if (tab === 'python') {
+    pythonStyle['background'] = activeBackground
+  }
+  if (tab === 'command') {
+    commandStyle['background'] = activeBackground
+  }
+
+  return (<div className="dependent-tabs" style={{width:'100%'}}>
+           <ul className="tabs">
+	       <li onClick={setTab('df')}  style={dfStyle}>DataFrame</li>
+	       <li onClick={setTab('python')} style={pythonStyle}>Python</li>
+	       <li onClick={setTab('command')} style={commandStyle}>Command</li>
+	    </ul>
+	    <div className="output-area">
+                {{'command': <CommandDisplayer filledCommands={ filledCommands }/>,
+                  'python': <PythonDisplayer filledCommands={ filledCommands }/>,
+	          'df': <TransformViewer filledCommands={ filledCommands }/>}[tab]}
+            </div>		      
 	</div>)
 }
 
