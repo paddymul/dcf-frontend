@@ -145,7 +145,7 @@ export function TransformViewer({ filledCommands }) {
 //@ts-ignore
 export function DependentTabs({ fullProps }) {
   const filledCommands = propsToCommands(fullProps)
-  const [tab, _setTab] = useState('df')
+  const [tab, _setTab] = useState('python')
   const setTab = (tabName:string) => {
       const retFunc = (e:any) => {
         _setTab(tabName);
