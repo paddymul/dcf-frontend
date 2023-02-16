@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import { tableDf } from "./staticData";
 import { propsToCommands, requestDf } from "./utils";
 import { DFViewer } from "./DFViewer"
+
 import _ from 'lodash';
 
 
@@ -9,6 +10,31 @@ interface ColumnState {
     drop:boolean
     fillna:boolean
 }
+
+
+
+interface Row {
+  id: number;
+  product: string;
+  price: string;
+}
+
+function createRows(): Row[] {
+  const rows: Row[] = [];
+
+  for (let i = 1; i < 1000; i++) {
+    rows.push({
+      id: i,
+      product:'foo',
+      price: '93.3'
+//      product: faker.commerce.productName(),
+//      price: faker.commerce.price()
+    });
+  }
+
+  return rows;
+}
+
 
 
 export function ColumnEditor(props:any) {
@@ -23,11 +49,10 @@ export function ColumnEditor(props:any) {
      colStateChanged({...colState, fillNaVal:e.target.value}) }  
 
    return (
-     	   <div className="column-editor" style={{width:'100%',  clear:'both', height:'30px',}}>
+     	   <div className="column-editor">
 	       <label>
-		    <span style={{float:"left"}}> FillNa</span>
+		    <span> FillNa</span>
 		    <input
-		     style={{float:"left"}}
 		       type="checkbox"
                        checked={colState.fillNa}
 		       onChange={fillNaChanged}/>
@@ -36,14 +61,12 @@ export function ColumnEditor(props:any) {
 		       onChange={fillNaValChanged}/>
 	       </label>
 	       <label>
-                  <span style={{float:"left"}}> Drop</span>
+                  <span> Drop</span>
                    <input
-		     style={{float:"left"}}
 		       type="checkbox"
                        checked={colState.drop}
 		       onChange={handleDropChanged}/>
 	       </label>
-
      </div>
   )
 }
@@ -54,14 +77,14 @@ function ColumnList({ fullProps, deepSet }) {
   const [columnProps, setColumnProps] = useState({drop:false, fillNa:false, fillNaVal:"zsdf" })	
 
   const listItems = _.keys(fullProps).map((name:any) =>
-    <div className="list-item" key={name} style={{padding:"3px"}}>
-        <dt style={{float:"left", maxWidth:"90px", overflow:"hidden",  maxHeight:"1rem"}} >{name}</dt>
-        <dd style={{float:"right"}} >{fullProps[name].type}</dd>
-              <ColumnEditor key={name} colState={fullProps[name]} colStateChanged={deepSet([name])}/>
+    <div className="list-item" key={name} >
+        <dt>{name}</dt>
+        <dd>{fullProps[name].type}</dd>
+        <ColumnEditor key={name} colState={fullProps[name]} colStateChanged={deepSet([name])}/>
     </div>);
 
-  return (<div className="column-list" style={{width:'100%', fontSize:"1rem", }}>
-              <dl style={{display:"flex", margin:0, padding:0}}>{listItems}</dl>
+  return (<div className="column-list" >
+              <dl>{listItems}</dl>
 	  </div>)
 }
 

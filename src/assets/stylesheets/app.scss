@@ -37,6 +37,32 @@ html,body
     outline:4px solid pink;
 }
 
+.column-list {
+    width:100%; font-size:1rem;
+    dl {
+	display:flex; margin:0; padding:0;
+	div.list-item {
+	    padding:3px;
+	    dt {
+		float:left; max-width:90px; overflow:hidden; max-height:1rem;
+	    }
+	    dd {
+		float:right;
+	    }
+	    .column-editor {
+		width:100%;  clear:both; height:30px;
+		label {
+		    span { float:left; }
+		    input[type=checkbox] {
+			float:left;
+		    }
+		    input[type=text] {}
+		}
+	    }
+	}
+    }
+}
+
 .dependent-tabs {
     font-size:1rem;
     ul.tabs {
@@ -82,4 +108,17 @@ html,body
     {
         padding: 0.5rem;
     }
+}
+
+
+#modal {
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid black;
+  padding: 16px;
+  list-style: none;
+
+  > li {
+    padding: 8px;
+  }
 }
