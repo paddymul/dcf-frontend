@@ -67,15 +67,17 @@ function ColumnList({ fullProps, deepSet }) {
 
 
 //@ts-ignore
-export function CommandDisplayer({filledCommands}) {
+export function CommandDisplayer({filledCommands, style}) {
+  const baseStyle = {margin:"0",  textAlign:"left"}
+  const localStyle = {...baseStyle, ...style } 
     return (
      	   <div className="command-displayer"  style={{width:'100%'}}>
-	       <pre style={{margin:0, minHeight:'30px'}}>{JSON.stringify(filledCommands)}</pre>
+	       <pre style={localStyle}>{JSON.stringify(filledCommands)}</pre>
            </div>)
 }
 
 //@ts-ignore
-export function PythonDisplayer({filledCommands}) {
+export function PythonDisplayer({filledCommands, style}) {
   const [pyString, setPyString] = useState("")
 
   const URLBase = "http://localhost:5000/dcf/"
@@ -103,9 +105,11 @@ export function PythonDisplayer({filledCommands}) {
       });
   }
   }, [filledCommands]);
+  const baseStyle = {margin:"0",  textAlign:"left"}
+  const localStyle = {...baseStyle, ...style } 
     return (
      	   <div className="python-displayer" style={{width:'100%',   }}>
-	       <pre style={{margin:"0",  minHeight:"30px", textAlign:"left"}}>{pyString}</pre>
+	       <pre style={localStyle}>{pyString}</pre>
            </div>)
 }
 
@@ -116,7 +120,7 @@ const transformInstructions = (raw) => {
 
 
 //@ts-ignore
-export function TransformViewer({ filledCommands }) {
+export function TransformViewer({ filledCommands, style }) {
   const [transDf, setTransDf] = useState(tableDf)
 
   const URLBase = "http://localhost:5000/dcf/"
@@ -137,7 +141,7 @@ export function TransformViewer({ filledCommands }) {
    requestDf(transUrl, setTransDf);
   }
   }, [filledCommands]);
-  return (<div className="transform-viewer"> <DFViewer  df={transDf} /> </div>);
+  return (<div className="transform-viewer"> <DFViewer style={style}  df={transDf} /> </div>);
 }
 
 
@@ -165,6 +169,7 @@ export function DependentTabs({ fullProps }) {
   if (tab === 'command') {
     commandStyle['background'] = activeBackground
   }
+  const style={height:"45vh"}
 
   return (<div className="dependent-tabs" style={{width:'100%'}}>
            <ul className="tabs">
@@ -173,9 +178,9 @@ export function DependentTabs({ fullProps }) {
 	       <li onClick={setTab('command')} style={commandStyle}>Command</li>
 	    </ul>
 	    <div className="output-area">
-                {{'command': <CommandDisplayer filledCommands={ filledCommands }/>,
-                  'python': <PythonDisplayer filledCommands={ filledCommands }/>,
-	          'df': <TransformViewer filledCommands={ filledCommands }/>}[tab]}
+                {{'command': <CommandDisplayer style={style}  filledCommands={ filledCommands }/>,
+                  'python': <PythonDisplayer style={style}  filledCommands={ filledCommands }/>,
+	          'df': <TransformViewer style={style} filledCommands={ filledCommands }/>}[tab]}
             </div>		      
 	</div>)
 }

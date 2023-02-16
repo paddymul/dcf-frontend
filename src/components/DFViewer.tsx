@@ -4,11 +4,11 @@ import DataGrid from 'react-data-grid';
 import { convertTableDF } from "./staticData";
 
 //@ts-ignore
-export function DFViewer({df}) {
+export function DFViewer({df, style={height:"300px"} }) {
   const [localColumns, localRows] = convertTableDF(df)
+  //Record<string, string|number>
+  const localStyle = style;
   return (
-    <div style={{width:'100%',  }}>
-      <DataGrid style={{height:"300px"}} columns={localColumns} rows={localRows} />
-    </div>
+      <DataGrid style={localStyle} columns={localColumns} rows={localRows} />
   );
 }

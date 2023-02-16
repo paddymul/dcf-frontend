@@ -53,17 +53,27 @@ html,body
 }
 
 
-.python-displayer {
+.python-displayer, .command-displayer {
     width:100%;
     height:100%;
-    border:1px solid red;
+    background: hsl(0deg 0% 13%);
+    overflow:hidden;
+    padding:16px;
+    /*border:1px solid red; */
     pre {
-	background: black;
+
+
 	color: #41FF00 
 		    
     }
 
 }
+.command-displayer {
+    pre {
+	overflow:hidden;
+    }
+}
+
 .features 
 {
     font-size: 1.7rem;
