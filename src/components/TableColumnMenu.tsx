@@ -21,8 +21,8 @@ export default function ContextMenuDemo() {
     left: number;
   } | null>(null);
   const menuRef = useRef<HTMLMenuElement | null>(null);
-  const isContextMenuOpen = contextMenuProps !== null;
-
+  const isContextMenuOpen = contextMenuProps !== null
+  console.log("contextMenuProps", contextMenuProps, isContextMenuOpen)
   useLayoutEffect(() => {
     if (!isContextMenuOpen) return;
     function onClick(event: MouseEvent) {
@@ -38,26 +38,29 @@ export default function ContextMenuDemo() {
   }, [isContextMenuOpen]);
 
 //        onCellContextMenu={({ row }:any, event:any) => {
+//    onCellClick={({ row, column }:any, event:any) => {
   return (
-    <>
+    <div className="TableColumnsMenu">
       <DataGrid
         columns={columns}
-    rows={rows.slice(0,2)}
-    rowKeyGetter={rowKeyGetter}
-        className="fill-grid"
-    direction="ltr"
+        rows={rows.slice(0,2)}
         //@ts-ignore
-        onCellClick={({ row }:any, event:any) => {
+        //onCellContextMenu={({ row, column }:any, event:any) => {
+        onCellClick={({ row, column }:any, event:any) => {
 	  console.log("row", row);
-          event.preventDefault();
+	  console.log("column", column);
+	  console.log("event", event);
+          //event.preventDefault();
 
           setContextMenuProps({
             top: event.clientY,
             left: event.clientX
           });
+//	  setContextMenuOpen(true)
+      console.log("after setContextMenuProps")
         }}
       />
-      {isContextMenuOpen &&
+      {contextMenuProps !== null &&
         createPortal(
           <menu
             ref={menuRef}
@@ -81,6 +84,6 @@ export default function ContextMenuDemo() {
           </menu>,
           document.body
         )}
-    </>
+    </div>
   );
 }

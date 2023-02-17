@@ -215,7 +215,6 @@ export function ColumnsEditor({ df }) {
 
     //<ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} /> 
   return (<div className="columns-editor" style={{width:'100%',    }}>
-
 	      <ContextMenuDemo />
 	      <DependentTabs fullProps={fullProps}/>
 	</div>)
