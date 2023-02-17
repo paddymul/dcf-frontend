@@ -4,12 +4,10 @@ import { Hello } from "./components/Hello";
 //import { ColumnEditor } from "./components/ColumnEditor";
 import { ColumnsEditor } from "./components/ColumnsEditor";
 import { DCFCell } from "./components/DCFCell";
-import { tableDf, columns, rows } from "./components/staticData";
 import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
+import ContextMenuDemo from "./components/TableColumnMenu"
 
-
-console.log(columns)
 
 export interface MainProps
 {
@@ -37,8 +35,11 @@ export class Main extends Component<MainProps, MainState>
     public render(): JSX.Element
     {
 
-        return (
-	    <DCFCell />
+	    //<DCFCell />
+      return (
+	<div style={{width:"100%", height:"500px"}}>
+	  <ContextMenuDemo />
+	</div>
         );
     }
 }

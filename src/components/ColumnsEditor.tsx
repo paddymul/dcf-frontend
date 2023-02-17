@@ -2,38 +2,15 @@ import React, { Component, useState, useEffect } from "react";
 import { tableDf } from "./staticData";
 import { propsToCommands, requestDf } from "./utils";
 import { DFViewer } from "./DFViewer"
-
 import _ from 'lodash';
 
+import ContextMenuDemo from "./TableColumnMenu"
 
 interface ColumnState {
     drop:boolean
     fillna:boolean
 }
 
-
-
-interface Row {
-  id: number;
-  product: string;
-  price: string;
-}
-
-function createRows(): Row[] {
-  const rows: Row[] = [];
-
-  for (let i = 1; i < 1000; i++) {
-    rows.push({
-      id: i,
-      product:'foo',
-      price: '93.3'
-//      product: faker.commerce.productName(),
-//      price: faker.commerce.price()
-    });
-  }
-
-  return rows;
-}
 
 
 
@@ -87,6 +64,9 @@ function ColumnList({ fullProps, deepSet }) {
               <dl>{listItems}</dl>
 	  </div>)
 }
+
+
+
 
 
 //@ts-ignore
@@ -233,9 +213,10 @@ export function ColumnsEditor({ df }) {
       return retFunc
   }
 
- 
+    //<ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} /> 
   return (<div className="columns-editor" style={{width:'100%',    }}>
-   	      <ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} />
+
+	      <ContextMenuDemo />
 	      <DependentTabs fullProps={fullProps}/>
 	</div>)
 }
