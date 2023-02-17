@@ -4,7 +4,8 @@ import { propsToCommands, requestDf } from "./utils";
 import { DFViewer } from "./DFViewer"
 import _ from 'lodash';
 
-import ContextMenuDemo from "./TableColumnMenu"
+//import ContextMenuDemo from "./TableColumnMenu"
+import DoubleTableMenu from "./DoubleTableMenu"
 
 interface ColumnState {
     drop:boolean
@@ -215,7 +216,7 @@ export function ColumnsEditor({ df }) {
 
     //<ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} /> 
   return (<div className="columns-editor" style={{width:'100%',    }}>
-	      <ContextMenuDemo />
+	      <DoubleTableMenu />
 	      <DependentTabs fullProps={fullProps}/>
 	</div>)
 }

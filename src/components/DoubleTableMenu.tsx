@@ -15,13 +15,14 @@ function rowKeyGetter(row: any) {
   return row.index;
 }
 
-export default function ContextMenuDemo() {
+export default function DoubleTableMenu() {
   const [contextMenuProps, setContextMenuProps] = useState<{
     top: number;
     left: number;
   } | null>(null);
   const menuRef = useRef<HTMLMenuElement | null>(null);
   const isContextMenuOpen = contextMenuProps !== null
+  console.log("contextMenuProps", contextMenuProps, isContextMenuOpen)
   useLayoutEffect(() => {
     if (!isContextMenuOpen) return;
     function onClick(event: MouseEvent) {
@@ -45,12 +46,12 @@ export default function ContextMenuDemo() {
         rows={rows.slice(0,2)}
         //@ts-ignore
         //onCellContextMenu={({ row, column }:any, event:any) => {
-        onCellClick={({ row, column }:any, event:any) => {
 //	  console.log("row", row);
-	  //console.log("column", column);
+        onCellClick={({ row, column }:any, event:any) => {
+	  console.log("column", column.name);
 //	  console.log("event", event);
           //event.preventDefault();
-	  console.log("column", column.name);
+
           setContextMenuProps({
             top: event.clientY,
             left: event.clientX
