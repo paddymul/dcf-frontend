@@ -40,8 +40,8 @@ export default function ContextMenuDemo() {
 //        onCellContextMenu={({ row }:any, event:any) => {
 //    onCellClick={({ row, column }:any, event:any) => {
   return (
-    <div className="TableColumnsMenu">
-      <DataGrid
+    <div className="TableColumnsMenu" style={{padding:"0 10px 0 0"}}>
+      <DataGrid style={{height:"150px"}}
         columns={columns}
         rows={rows.slice(0,2)}
         //@ts-ignore
