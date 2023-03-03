@@ -15,59 +15,48 @@ function rowKeyGetter(row: any) {
   return row.index;
 }
 
-export default function DoubleTableMenu() {
+export function ContextCellMenu() {
   const [contextMenuProps, setContextMenuProps] = useState<{
     top: number;
     left: number;
   } | null>(null);
   const menuRef = useRef<HTMLMenuElement | null>(null);
   const isContextMenuOpen = contextMenuProps !== null
-  //console.log("contextMenuProps", contextMenuProps, isContextMenuOpen)
   useLayoutEffect(() => {
     if (!isContextMenuOpen) return;
     function onClick(event: MouseEvent) {
       if (event.target instanceof Node && menuRef.current?.contains(event.target)) {
-        return;
-      }
-      setContextMenuProps(null);
-    }
+        return; }
+      setContextMenuProps(null); }
     addEventListener('click', onClick);
     return () => {
-      removeEventListener('click', onClick);
-    };
+      removeEventListener('click', onClick);};
   }, [isContextMenuOpen]);
 
   const row1:Record<string,any> = {}
   columns.map((col:any) => {row1[col.key] = "false"})
   const [columnSelectRows, setColumnSelect] = useState([row1])
-  //const fakeRows = [row1]
-//        onCellContextMenu={({ row }:any, event:any) => {
-//    onCellClick={({ row, column }:any, event:any) => {
   return (
     <div className="TableColumnsMenu" style={{padding:"0 10px 0 0"}}>
       <DataGrid style={{height:"150px"}}
         columns={columns}
-        //rows={rows.slice(0,1)}
          rows = {columnSelectRows}
         //@ts-ignore
-        //onCellContextMenu={({ row, column }:any, event:any) => {
-//	  console.log("row", row);
-        onCellClick={({ row, column }:any, event:any) => {
+        onCellContextMenu={({ row, column }:any, event:any) => {
 	  console.log("column", column.name);
 
 	  const tempRow = _.clone(columnSelectRows[0])
 	  const oldVal = tempRow[column.key]
 	  tempRow[column.key] = oldVal == "false" ? "true": "false"
 	  setColumnSelect([tempRow])
-//	  console.log("event", event);
-          //event.preventDefault();
+	  console.log("event", event);
+	  event.preventDefault();
 
           setContextMenuProps({
             top: event.clientY,
             left: event.clientX
           });
-//	  setContextMenuOpen(true)
-//      console.log("after setContextMenuProps")
+	  console.log("after setContextMenuProps")
         }}
       />
       {contextMenuProps !== null &&
@@ -96,4 +85,31 @@ export default function DoubleTableMenu() {
         )}
     </div>
   );
+
 }
+
+//export default function DoubleTableMenu = ContextCellMenu;
+
+export default function DoubleTableMenu2() {
+
+  const row1:Record<string,any> = {}
+  columns.map((col:any) => {row1[col.key] = "false"})
+  const [columnSelectRows, setColumnSelect] = useState([row1])
+  return (
+    <div className="TableColumnsMenu" style={{padding:"0 10px 0 0"}}>
+      <DataGrid style={{height:"150px"}}
+        columns={columns}
+         rows = {columnSelectRows}
+        //@ts-ignore
+        onCellClick={({ row, column }:any, event:any) => {
+	  console.log("column", column.name);
+	  const tempRow = _.clone(columnSelectRows[0])
+	  const oldVal = tempRow[column.key]
+	  tempRow[column.key] = oldVal == "false" ? "true": "false"
+	  setColumnSelect([tempRow])
+        }}
+      />
+    </div>
+  );
+}
+
