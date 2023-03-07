@@ -9,6 +9,7 @@ module.exports = (env, options) =>
         mode: options.mode,
         entry: entryConfig,
         devServer,
+
         // Dev only
         // Target must be set to web for hmr to work with .browserlist
         // https://github.com/webpack/webpack-dev-server/issues/2758#issuecomment-710086019

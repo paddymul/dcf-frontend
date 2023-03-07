@@ -30,6 +30,7 @@ const devServer = {
     static: {
         directory: path.join(__dirname, outputConfig.destPath),
     },
+	historyApiFallback: true
     // https: true,
     // port: "8080",
     // host: "0.0.0.0",
