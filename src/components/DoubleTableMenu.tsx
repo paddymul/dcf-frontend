@@ -88,18 +88,23 @@ export function ContextCellMenu() {
 
 }
 
-//export default function DoubleTableMenu = ContextCellMenu;
 
 export default function DoubleTableMenu2() {
 
   const row1:Record<string,any> = {}
   columns.map((col:any) => {row1[col.key] = "false"})
   const [columnSelectRows, setColumnSelect] = useState([row1])
+
+  const commandsColumns = [{key:"fillna", name:"fillna-name"}, {key:"drop", name:"drop-name"}]
+  const commandRows = [{fillna:"false", drop:"false"}]
+  
+  const [generatedCommands, setGeneratedCommands] = useState([])
+  
   return (
     <div className="TableColumnsMenu" style={{padding:"0 10px 0 0"}}>
       <DataGrid style={{height:"150px"}}
         columns={columns}
-         rows = {columnSelectRows}
+         rows={columnSelectRows}
         //@ts-ignore
         onCellClick={({ row, column }:any, event:any) => {
 	  console.log("column", column.name);
@@ -109,6 +114,19 @@ export default function DoubleTableMenu2() {
 	  setColumnSelect([tempRow])
         }}
       />
+    <DataGrid style={{height:"150px"}}
+        columns={commandsColumns}
+        rows={commandRows}
+    onCellClick={({ row, column }:any, event:any) => {
+	  console.log("column", column.name);
+          // add to generated commands
+	  const tempRow = _.clone(columnSelectRows[0])
+	  const oldVal = tempRow[column.key]
+	  tempRow[column.key] = oldVal == "false" ? "true": "false"
+	  setColumnSelect([tempRow])
+        }}
+    />
+
     </div>
   );
 }
