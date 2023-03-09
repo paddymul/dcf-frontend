@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { App } from "./App";
 import { DCFCell } from "./components/DCFCell";
 import DoubleTableMenu  from "./components/DoubleTableMenu"
+import { Commands }  from "./components/Commands"
 import 'react-data-grid/lib/styles.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -47,6 +48,7 @@ export class Main extends Component<MainProps, MainState>
 	  <Routes>
 	    <Route path="/" element={<DCFCell />} />
 	    <Route path="/double" element={ <DoubleTableMenu /> } />
+	    <Route path="/commands" element={ <Commands /> } />
 	  </Routes>
     </BrowserRouter>
 
