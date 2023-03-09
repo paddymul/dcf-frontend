@@ -88,6 +88,43 @@ export function ContextCellMenu() {
 
 }
 
+const sym = (symbolName:string) => {
+  return {'symbol':symbolName}
+}
+
+const bakedCommands = [
+  [sym("dropcol"), sym('df'), 'col1'],
+  [sym("fillna"), sym('df'), 'col2', 5]
+]
+
+
+
+//@ts-ignore
+const CommandViewer = ({commands}) => {
+  //@ts-ignore
+  const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
+    const name = element[0]['symbol']
+    const key =  name+index.toString()
+    const column = {key, name}
+    return column
+  })
+
+  //@ts-ignore
+  const rowElements = _.map(Array.from(commands.entries()), ([index, element]) => {
+    const name = element[0]['symbol']
+    const key =  name+index.toString()
+    const rowEl: Record<string, any> = {}
+    rowEl[key] = element[2]
+    return rowEl
+  })
+
+  const rows = [_.merge({}, ...rowElements)]
+  return <DataGrid style={{height:"150px"}}
+        //@ts-ignore
+        columns={columns}
+        rows={rows}
+      />
+}
 
 export default function DoubleTableMenu2() {
 
@@ -101,7 +138,8 @@ export default function DoubleTableMenu2() {
   const [generatedCommands, setGeneratedCommands] = useState([])
   
   return (
-    <div className="TableColumnsMenu" style={{padding:"0 10px 0 0"}}>
+    <div className="TableColumnsMenu" style={{padding:"0 10px 0 0", width:"100%"}}>
+      <CommandViewer commands={bakedCommands}/>
       <DataGrid style={{height:"150px"}}
         columns={columns}
          rows={columnSelectRows}
