@@ -98,7 +98,6 @@ const bakedCommands = [
 ]
 
 
-
 //@ts-ignore
 const CommandViewer = ({commands}) => {
   //@ts-ignore
