@@ -3,6 +3,7 @@ import { App } from "./App";
 import { DCFCell } from "./components/DCFCell";
 import DoubleTableMenu  from "./components/DoubleTableMenu"
 import { Commands }  from "./components/Commands"
+import { CommandDetailHarness }  from "./components/CommandDetail"
 import 'react-data-grid/lib/styles.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -49,6 +50,7 @@ export class Main extends Component<MainProps, MainState>
 	    <Route path="/" element={<DCFCell />} />
 	    <Route path="/double" element={ <DoubleTableMenu /> } />
 	    <Route path="/commands" element={ <Commands /> } />
+	    <Route path="/ComandDetail" element={ <CommandDetailHarness /> } />
 	  </Routes>
     </BrowserRouter>
 
