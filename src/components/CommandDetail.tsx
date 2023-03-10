@@ -6,18 +6,24 @@ import { sym, bakedCommands } from './CommandUtils'
 const nullSetter = ()=> 5
 
 //@ts-ignore
+//export const CommandDetail = ({command, commandSetter}) => {
 export const CommandDetail = ({command}) => {
   const commandName = command[0]['symbol']
   const pattern = CommandPatterns[commandName]
+  
   if (! _.isArray(pattern)){
     //we shouldn't get here
     return <h2>unknown command {commandName}</h2>
   } else if (_.isEqual(pattern, [null])) {
     return <h2>no arguments</h2>
   } else {
-    console.log("command", command)
     const val = command[3]
-    return <ArgGetter argProps={pattern[0]} val={val} setter={nullSetter} />
+    const valSetter = (newVal:any) => {
+
+      const newCommand = [command[0], command[1], command[2], newVal];
+      console.log("newCommand", newCommand)
+    }
+    return <ArgGetter argProps={pattern[0]} val={val} setter={valSetter} />
   }
   return <h2></h2>
 }
@@ -42,22 +48,25 @@ const CommandPatterns:Record<string, ArgSpec[]> = {
 const ArgGetter = ({argProps, val, setter}) => {
   //@ts-ignore
   const [argPos, label, argType, lastArg] = argProps
-  console.log("argProps", argProps)
+
+  const defaultShim = (event:any) => setter(event.target.value)
   //type should actually be lined up with the column somehow, punting for now
+
   if (argType === 'enum') {
     return (<fieldset>
       <label> {label} </label>
-      <select value={val}>
+      <select defaultValue={val} onChange={defaultShim}>
       //@ts-ignore
-      {lastArg.map((optionVal:any) => <option value={optionVal}>{optionVal}</option>)}
+      {lastArg.map((optionVal:any) => <option key={optionVal} value={optionVal}>{optionVal}</option>)}
 	</select>
       </fieldset>)
   }
   else if(argType === 'type') {
     if(lastArg === 'integer'){
+      const valSetterShim = (event:any) => setter(parseInt(event.target.value))
       return (<fieldset>
 	<label> {label} </label>
-	  <input type="number" value={val} step="1" />
+	<input type="number" defaultValue={val} step="1" onChange={valSetterShim} />
 	</fieldset>)
     } else {
       return (<fieldset>
