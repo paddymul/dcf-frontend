@@ -15,7 +15,9 @@ export const CommandDetail = ({command}) => {
   } else if (_.isEqual(pattern, [null])) {
     return <h2>no arguments</h2>
   } else {
-    return <ArgGetter argProps={pattern[0]} val={3} setter={nullSetter} />
+    console.log("command", command)
+    const val = command[3]
+    return <ArgGetter argProps={pattern[0]} val={val} setter={nullSetter} />
   }
   return <h2></h2>
 }
@@ -45,7 +47,7 @@ const ArgGetter = ({argProps, val, setter}) => {
   if (argType === 'enum') {
     return (<fieldset>
       <label> {label} </label>
-      <select>
+      <select value={val}>
       //@ts-ignore
       {lastArg.map((optionVal:any) => <option value={optionVal}>{optionVal}</option>)}
 	</select>
