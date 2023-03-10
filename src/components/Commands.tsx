@@ -43,39 +43,7 @@ const CommandViewer = ({commands, setCommands}) => {
   })
   const keyToIdx = _.merge({}, ...idxObjs)
 
-
-  //@ts-ignore
-  const [activeCommand, setActiveCommand] = useState(null)
-  
   const [activeKey, setActiveKey] = useState(null)
-  /*
-  function handleIncrementClick(index) {
-    const nextCounters = counters.map((c, i) => {
-      if (i === index) {
-        // Increment the clicked counter
-        return c + 1;
-      } else {
-        // The rest haven't changed
-        return c;
-      }
-    });
-    setCounters(nextCounters);
-  }
-
-  function handleSetCommand(key, newCommand) {
-    const index = keyToIdx[key]
-    const nextCommands = commands.map((c, i) => {
-      if (i === index) {
-        // Increment the clicked counter
-        return newCommand
-      } else {
-        // The rest haven't changed
-        return c;
-      }
-    });
-    setCommands(nextCommands);
-  }
-  */
 
   function getSetCommand(key:any) {
     return (newCommand:any) => {
@@ -83,10 +51,8 @@ const CommandViewer = ({commands, setCommands}) => {
     //@ts-ignore
     const nextCommands = commands.map((c, i) => {
       if (i === index) {
-        // Increment the clicked counter
         return newCommand
       } else {
-        // The rest haven't changed
         return c;
       }
     });
@@ -94,7 +60,6 @@ const CommandViewer = ({commands, setCommands}) => {
     }
   }
 
-    /*{ activeCommand && <CommandDetail command={activeCommand}/> }*/
   return (<div>
     <DataGrid style={{height:"150px"}}
         //@ts-ignore
@@ -107,12 +72,9 @@ const CommandViewer = ({commands, setCommands}) => {
 	  const oldVal = tempRow[column.key]
 	  tempRow[column.key] = oldVal == "false" ? "true": "false"
           //@ts-ignore
-	  //setActiveCommand(commandDict[column.key])
 	  setActiveKey(column.key)
         }}
     />
-
-
     { activeKey && <CommandDetail command={commandDict[activeKey]}
                                   setCommand={getSetCommand(activeKey)}/> }
 	  </div>)

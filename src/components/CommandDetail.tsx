@@ -7,7 +7,6 @@ const nullSetter = ()=> 5
 
 //@ts-ignore
 export const CommandDetail = ({command, setCommand}) => {
-//export const CommandDetail = ({command}) => {
   const commandName = command[0]['symbol']
   const pattern = CommandPatterns[commandName]
   
@@ -19,7 +18,6 @@ export const CommandDetail = ({command, setCommand}) => {
   } else {
     const val = command[3]
     const valSetter = (newVal:any) => {
-
       const newCommand = [command[0], command[1], command[2], newVal];
       console.log("newCommand", newCommand)
       setCommand(newCommand)
