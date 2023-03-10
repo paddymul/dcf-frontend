@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect, useReducer, useRef, useLayoutEff
 import _ from 'lodash';
 import DataGrid from 'react-data-grid';
 import { bakedCommands } from './CommandUtils'
-import { CommandDetail } from './CommandDetail'
+import { CommandDetail, CommandAdder } from './CommandDetail'
 //@ts-ignore
 const CommandViewer = ({commands, setCommands}) => {
   //@ts-ignore
@@ -76,6 +76,11 @@ const CommandViewer = ({commands, setCommands}) => {
     }
   }
 
+  const addCommand = (newCommand:any) => {
+    console.log("newCommand", newCommand)
+    setCommands([...commands, newCommand])
+  }
+
   return (<div>
     <DataGrid style={{height:"150px"}}
         //@ts-ignore
@@ -95,6 +100,8 @@ const CommandViewer = ({commands, setCommands}) => {
                                   setCommand={getSetCommand(activeKey)}
 		                  deleteCB={getDeleteCommand(activeKey)}
       /> }
+    <CommandAdder column={"new-column"} addCommandCb={addCommand} />
+
 	  </div>)
 }
 
