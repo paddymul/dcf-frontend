@@ -3,6 +3,8 @@ import _ from 'lodash';
 import DataGrid from 'react-data-grid';
 import { sym, bakedCommands } from './CommandUtils'
 
+const nullSetter = ()=> 5
+
 //@ts-ignore
 export const CommandDetail = ({command}) => {
   const commandName = command[0]['symbol']
@@ -13,7 +15,7 @@ export const CommandDetail = ({command}) => {
   } else if (_.isEqual(pattern, [null])) {
     return <h2>no arguments</h2>
   } else {
-    //insert ArgGetter for each remaining argument
+    return <ArgGetter argProps={pattern[0]} val={3} setter={nullSetter} />
   }
   return <h2></h2>
 }
@@ -71,7 +73,7 @@ export const CommandDetailHarness = () => {
       const activeCommand = bakedCommands[0]
   return (<div>
     <CommandDetail command={activeCommand}/> 
-    <ArgGetter argProps={CommandPatterns['fillna'][0]} val={3} setter={()=> 5} />
-    <ArgGetter argProps={CommandPatterns['resample'][0]} val={'daily'} setter={()=> 5} />
+    <ArgGetter argProps={CommandPatterns['fillna'][0]} val={3} setter={nullSetter} />
+    <ArgGetter argProps={CommandPatterns['resample'][0]} val={'daily'} setter={nullSetter} />
     </div>)
 }
