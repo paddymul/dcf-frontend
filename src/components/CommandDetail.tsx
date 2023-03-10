@@ -6,8 +6,8 @@ import { sym, bakedCommands } from './CommandUtils'
 const nullSetter = ()=> 5
 
 //@ts-ignore
-//export const CommandDetail = ({command, commandSetter}) => {
-export const CommandDetail = ({command}) => {
+export const CommandDetail = ({command, setCommand}) => {
+//export const CommandDetail = ({command}) => {
   const commandName = command[0]['symbol']
   const pattern = CommandPatterns[commandName]
   
@@ -22,6 +22,7 @@ export const CommandDetail = ({command}) => {
 
       const newCommand = [command[0], command[1], command[2], newVal];
       console.log("newCommand", newCommand)
+      setCommand(newCommand)
     }
     return <ArgGetter argProps={pattern[0]} val={val} setter={valSetter} />
   }
@@ -83,7 +84,7 @@ const ArgGetter = ({argProps, val, setter}) => {
 export const CommandDetailHarness = () => {
       const activeCommand = bakedCommands[0]
   return (<div>
-    <CommandDetail command={activeCommand}/> 
+    <CommandDetail command={activeCommand} setCommand={nullSetter}/> 
     <ArgGetter argProps={CommandPatterns['fillna'][0]} val={3} setter={nullSetter} />
     <ArgGetter argProps={CommandPatterns['resample'][0]} val={'daily'} setter={nullSetter} />
     </div>)
