@@ -60,6 +60,22 @@ const CommandViewer = ({commands, setCommands}) => {
     }
   }
 
+  function getDeleteCommand(key:any) {
+    return (newCommand:any) => {
+      const index = keyToIdx[key]
+      //@ts-ignore
+      const nextCommands = commands.map((c, i) => {
+	if (i === index) {
+          return undefined
+	} else {
+          return c;
+	}
+      });
+      setActiveKey(null)
+      setCommands(_.filter(nextCommands));
+    }
+  }
+
   return (<div>
     <DataGrid style={{height:"150px"}}
         //@ts-ignore
@@ -76,7 +92,9 @@ const CommandViewer = ({commands, setCommands}) => {
         }}
     />
     { activeKey && <CommandDetail command={commandDict[activeKey]}
-                                  setCommand={getSetCommand(activeKey)}/> }
+                                  setCommand={getSetCommand(activeKey)}
+		                  deleteCB={getDeleteCommand(activeKey)}
+      /> }
 	  </div>)
 }
 

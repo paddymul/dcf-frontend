@@ -6,7 +6,7 @@ import { sym, bakedCommands } from './CommandUtils'
 const nullSetter = ()=> 5
 
 //@ts-ignore
-export const CommandDetail = ({command, setCommand}) => {
+export const CommandDetail = ({command, setCommand, deleteCB}) => {
   const commandName = command[0]['symbol']
   const pattern = CommandPatterns[commandName]
   
@@ -14,7 +14,7 @@ export const CommandDetail = ({command, setCommand}) => {
     //we shouldn't get here
     return <h2>unknown command {commandName}</h2>
   } else if (_.isEqual(pattern, [null])) {
-    return <h2>no arguments</h2>
+    return <div><h2>no arguments</h2><button onClick={deleteCB}>X</button></div>
   } else {
     const val = command[3]
     const valSetter = (newVal:any) => {
@@ -22,7 +22,10 @@ export const CommandDetail = ({command, setCommand}) => {
       console.log("newCommand", newCommand)
       setCommand(newCommand)
     }
-    return <ArgGetter argProps={pattern[0]} val={val} setter={valSetter} />
+    return (<div>
+      <ArgGetter argProps={pattern[0]} val={val} setter={valSetter} />
+      <button onClick={deleteCB}>X</button>
+      </div>)
   }
   return <h2></h2>
 }
@@ -82,7 +85,7 @@ const ArgGetter = ({argProps, val, setter}) => {
 export const CommandDetailHarness = () => {
       const activeCommand = bakedCommands[0]
   return (<div>
-    <CommandDetail command={activeCommand} setCommand={nullSetter}/> 
+    <CommandDetail command={activeCommand} setCommand={nullSetter} deleteCB={nullSetter}/> 
     <ArgGetter argProps={CommandPatterns['fillna'][0]} val={3} setter={nullSetter} />
     <ArgGetter argProps={CommandPatterns['resample'][0]} val={'daily'} setter={nullSetter} />
     </div>)
