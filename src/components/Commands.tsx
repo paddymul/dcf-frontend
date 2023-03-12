@@ -4,7 +4,7 @@ import DataGrid from 'react-data-grid';
 import { bakedCommands } from './CommandUtils'
 import { CommandDetail, CommandAdder } from './CommandDetail'
 //@ts-ignore
-const CommandViewer = ({commands, setCommands}) => {
+const CommandViewer = ({commands, setCommands, activeColumn, allColumns}) => {
   //@ts-ignore
   const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
     const name = element[0]['symbol']
@@ -77,7 +77,6 @@ const CommandViewer = ({commands, setCommands}) => {
   }
 
   const addCommand = (newCommand:any) => {
-    console.log("newCommand", newCommand)
     setCommands([...commands, newCommand])
   }
 
@@ -100,7 +99,7 @@ const CommandViewer = ({commands, setCommands}) => {
                                   setCommand={getSetCommand(activeKey)}
 		                  deleteCB={getDeleteCommand(activeKey)}
       /> }
-    <CommandAdder column={"new-column"} addCommandCb={addCommand} />
+    <CommandAdder column={activeColumn} addCommandCb={addCommand} />
 
 	  </div>)
 }
@@ -109,7 +108,9 @@ const CommandViewer = ({commands, setCommands}) => {
 export const Commands = ()=> {
   const [c, setC] = useState(bakedCommands)
   return (<div style={{width:"100%", height:"100%"}}>
-    <CommandViewer commands={c} setCommands={setC}/>
+    <CommandViewer commands={c} setCommands={setC} 
+	  activeColumn={'new-column2'}
+	  allColumns={['foo-col', 'bar-col', 'baz-col']} />
     <code style={{fontSize:"1em", textAlign:"left"}}> {JSON.stringify(c, null, "\t\n\r")} </code>
     </div>)
 }
