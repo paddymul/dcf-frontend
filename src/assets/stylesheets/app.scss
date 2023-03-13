@@ -124,3 +124,20 @@ html,body
 }
 
 
+.command-viewer {
+    .command-box {
+	display:flex;
+	h4 {
+	    width:150px;
+	    font-size:1em;
+		  
+	}
+	div {
+
+	    overflow-x:scroll
+	}
+    }
+	    
+}
+
+.asdf {background:red}

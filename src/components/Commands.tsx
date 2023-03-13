@@ -5,13 +5,6 @@ import { bakedCommands } from './CommandUtils'
 import { CommandDetail, CommandAdder } from './CommandDetail'
 //@ts-ignore
 export const CommandViewer = ({commands, setCommands, activeColumn, allColumns}) => {
-  //@ts-ignore
-  const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
-    const name = element[0]['symbol']
-    const key =  name+index.toString()
-    const column = {key, name, width:40}
-    return column
-  })
 
   //@ts-ignore
   const rowElements = _.map(Array.from(commands.entries()), ([index, element]) => {
@@ -44,6 +37,15 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
   const keyToIdx = _.merge({}, ...idxObjs)
 
   const [activeKey, setActiveKey] = useState(null)
+
+  //@ts-ignore
+  const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
+    const name = element[0]['symbol']
+    const key =  name+index.toString()
+    const column = {key, name, width:20, maxWidth:60, cellClass: "asdf"}
+    return column
+  })
+
 
   function getSetCommand(key:any) {
     return (newCommand:any) => {
@@ -80,8 +82,10 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
     setCommands([...commands, newCommand])
   }
 
-  return (<div>
-    <DataGrid style={{height:"150px"}}
+  return (<div className="command-viewer">
+    <div className="command-box">
+    <h4> Commands </h4>
+    <DataGrid style={{width:"800px", height:"100px"}}
         //@ts-ignore
         columns={columns}
         rows={rows}
@@ -95,6 +99,7 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
 	  setActiveKey(column.key)
         }}
     />
+    </div>
     { activeKey && <CommandDetail command={commandDict[activeKey]}
                                   setCommand={getSetCommand(activeKey)}
                                   deleteCB={getDeleteCommand(activeKey)}
