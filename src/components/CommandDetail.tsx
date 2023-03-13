@@ -25,7 +25,7 @@ const objWithoutNull = (obj:Record<string, any>, extraStrips:any[]=[]) =>
 
 
 //@ts-ignore
-export const CommandDetail = ({command, setCommand, deleteCB}) => {
+export const CommandDetail = ({command, setCommand, deleteCB, columns}) => {
   const commandName = command[0]['symbol']
   const pattern = CommandPatterns[commandName]
   
@@ -37,7 +37,7 @@ export const CommandDetail = ({command, setCommand, deleteCB}) => {
   } else {
     const fullPattern = pattern as ActualArg[]
     return (<div>
-      <ArgGetters command={command} fullPattern={fullPattern} setCommand={setCommand}/>
+      <ArgGetters command={command} fullPattern={fullPattern} setCommand={setCommand} columns={columns}/>
       <button onClick={deleteCB}>X</button>
       </div>)
   }
@@ -46,8 +46,9 @@ export const CommandDetail = ({command, setCommand, deleteCB}) => {
 
 //@ts-ignore
 export const ArgGetters = (
-  {command, fullPattern, setCommand}:
-  {command:any, fullPattern:ActualArg[], setCommand:any}) => {
+  {command, fullPattern, setCommand, columns}:
+  {command:any, fullPattern:ActualArg[], setCommand:any
+   columns:string[]}) => {
     const makeArgGetter = (pattern:ActualArg) => {
       const idx = pattern[0]
       const val = command[idx]
@@ -57,7 +58,7 @@ export const ArgGetters = (
 	setCommand(newCommand)
       }
       return (<ArgGetter argProps={pattern} val={val} setter={valSetter}
-	      columns={['foo', 'bar', 'baz']} />)
+	      columns={columns} />)
     }
     return (<div className={"argGetters"}>
       {fullPattern.map(makeArgGetter)}
@@ -191,6 +192,7 @@ export const CommandAdder = ({column, addCommandCb}) => {
 export const CommandDetailHarness = () => {
       const activeCommand = bakedCommands[0]
   return (<div>
-    <CommandDetail command={activeCommand} setCommand={nullSetter} deleteCB={nullSetter}/> 
+    <CommandDetail command={activeCommand} setCommand={nullSetter} deleteCB={nullSetter}
+	  columns={['foo', 'bar', 'baz']}/> 
     </div>)
 }

@@ -18,9 +18,6 @@ export function DCFCell() {
         return (
 	
 	    <div className="dcf-root flex flex-col" style={{width:'100%', height:"100%"}}>
-	           <button className="btn" onClick={() => navigate('double')}>
-		             Place Order
-			     </button>
 	        <h1 style={{fontSize:"1.25rem", margin:"5px", textAlign:"left"}}>Data Cleaning Framework </h1>
 	        <div className="orig-df flex flex-row"
 		    style={{height:"250px", overflow:"hidden"}}>

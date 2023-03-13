@@ -3,6 +3,8 @@ import { tableDf } from "./staticData";
 import { propsToCommands, requestDf } from "./utils";
 import { DFViewer } from "./DFViewer"
 import _ from 'lodash';
+import { CommandViewer } from './Commands'
+import { bakedCommands } from './CommandUtils'
 
 //import ContextMenuDemo from "./TableColumnMenu"
 import DoubleTableMenu from "./DoubleTableMenu"
@@ -151,8 +153,7 @@ export function TransformViewer({ filledCommands, style }) {
 
 
 //@ts-ignore
-export function DependentTabs({ fullProps }) {
-  const filledCommands = propsToCommands(fullProps)
+export function DependentTabs({ filledCommands }) {
   const [tab, _setTab] = useState('python')
   const setTab = (tabName:string) => {
       const retFunc = (e:any) => {
@@ -214,10 +215,15 @@ export function ColumnsEditor({ df }) {
       return retFunc
   }
 
+  const [commands, setCommands] = useState(bakedCommands)
+  const allColumns = df.schema.fields.map((field:any) => field.name)
     //<ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} /> 
   return (<div className="columns-editor" style={{width:'100%',    }}>
-	      <DoubleTableMenu />
-	      <DependentTabs fullProps={fullProps}/>
+    <CommandViewer commands={commands} setCommands={setCommands} 
+	  activeColumn={'new-column2'}
+	  allColumns={allColumns} />
+
+	      <DependentTabs filledCommands={commands}/>
 	</div>)
 }
 

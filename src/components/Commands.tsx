@@ -4,7 +4,7 @@ import DataGrid from 'react-data-grid';
 import { bakedCommands } from './CommandUtils'
 import { CommandDetail, CommandAdder } from './CommandDetail'
 //@ts-ignore
-const CommandViewer = ({commands, setCommands, activeColumn, allColumns}) => {
+export const CommandViewer = ({commands, setCommands, activeColumn, allColumns}) => {
   //@ts-ignore
   const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
     const name = element[0]['symbol']
@@ -97,7 +97,9 @@ const CommandViewer = ({commands, setCommands, activeColumn, allColumns}) => {
     />
     { activeKey && <CommandDetail command={commandDict[activeKey]}
                                   setCommand={getSetCommand(activeKey)}
-		                  deleteCB={getDeleteCommand(activeKey)}
+                                  deleteCB={getDeleteCommand(activeKey)}
+      columns={allColumns}
+      
       /> }
     <CommandAdder column={activeColumn} addCommandCb={addCommand} />
 
