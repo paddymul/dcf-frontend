@@ -13,6 +13,16 @@ const replaceAtIdx = (arr:any[], idx:number, subst:any) => {
   return arr.map((item:any, innerIdx:number) => innerIdx === idx? subst : item)
 }
 
+const replaceAtKey = (obj:Record<string, any>, key:string, subst:any) => {
+  const objCopy = _.clone(obj)
+  objCopy[key] = subst
+  return objCopy
+}
+
+
+const objWithoutNull = (obj:Record<string, any>) =>
+  _.pickBy(obj, (x) => ![null, undefined].includes(x))
+
 
 //@ts-ignore
 export const CommandDetail = ({command, setCommand, deleteCB}) => {
@@ -46,14 +56,13 @@ export const ArgGetters = (
 	console.log("newCommand", newCommand)
 	setCommand(newCommand)
       }
-      return (<ArgGetter argProps={pattern} val={val} setter={valSetter} />)
+      return (<ArgGetter argProps={pattern} val={val} setter={valSetter}
+	      columns={['foo', 'bar', 'baz']} />)
     }
     return (<div className={"argGetters"}>
       {fullPattern.map(makeArgGetter)}
 	    </div>)
 }
-
-
 
 const UnknownCommand = [sym("nonexistent"), sym('df'), 'col1']
 
@@ -65,47 +74,24 @@ type NoArgs = null
 type ActualArg = TypeSpec | EnumSpec | ColEnumSpec
 type ArgSpec = TypeSpec | EnumSpec | ColEnumSpec | NoArgs
 
-
-
 const CommandPatterns:Record<string, ArgSpec[]> = {
   "dropcol":[null],
   "fillna":[[3, 'fillVal', 'type', 'integer']],
   "resample":[[3, 'frequency', 'enum', ['daily', 'weekly', 'monthly']],
-	      [4, 'colMap', 'enum', ['daily', 'weekly', 'monthly']]]
+	      [4, 'colMap', 'colEnum', ['sum', 'mean', 'count']]]
 }
 
 const CommandDefaults:Record<string, any> = {
   "dropcol":  [sym("dropcol"), sym("df"), "col"],
   "fillna":   [sym("fillna"), sym("df"), "col", 8],
-  "resample": [sym("resample"), sym('df'), 'col', 'monthly']
+  "resample": [sym("resample"), sym('df'), 'col', 'monthly', {}]
 }
 
-
 //@ts-ignore
-export const CommandAdder = ({column, addCommandCb}) => {
-  //@ts-ignore
-  const [commandName, setCommand] = useState(_.keys(CommandDefaults)[0])
-  const setCommandShim = (event:any) => setCommand(event.target.value)
-  const addCommand = () => {
-    const defaultCommand = CommandDefaults[commandName]
-    addCommandCb(replaceInArr(defaultCommand, "col", column))
-  }
-  return (<div>
-    <button onClick={addCommand}>Add</button>
-    <fieldset>
-    <span> Column: {column}</span>
-      <label> Command Name </label>
-      <select defaultValue={commandName} onChange={setCommandShim}>
-      //@ts-ignore
-    {_.keys(CommandDefaults).map((optionVal:any) => <option key={optionVal} value={optionVal}>{optionVal}</option>)}
-	</select>
-    </fieldset>
-    </div>)
-}
-
-
-//@ts-ignore
-const ArgGetter = ({argProps, val, setter}) => {
+const ArgGetter = (
+  {argProps, val, setter, columns}:
+  {argProps:ActualArg, val:any, setter:any, columns:string[]}
+) => {
   //@ts-ignore
   const [argPos, label, argType, lastArg] = argProps
 
@@ -134,17 +120,77 @@ const ArgGetter = ({argProps, val, setter}) => {
 	  <input  value="dont know"/>
 	</fieldset>)
     }
-  } else {
+  }
+  else if (argType === 'colEnum') {
+    const widgetRow = columns.map((colName:string) => {
+
+    //const widgetRow = columns.map((colName:any) => {
+      const colSetter = (event:any) => {
+	const newColVal = event.target.value
+	const updatedColDict = replaceAtKey(val, colName, newColVal)
+	setter(updatedColDict)
+      }
+      const colVal = _.get(val, colName, 'null')
+      return (<td><select defaultValue={colVal} onChange={colSetter}>
+	//@ts-ignore
+	{lastArg.map((optionVal:any) => <option key={optionVal} value={optionVal}>{optionVal}</option>)}
+	      </select>
+	</td>
+	)
+    })
+				  
+    
+    return (<table>
+      <thead><tr>
+      {columns.map((colName) => (<th>{colName}</th>))}
+	    </tr>
+      </thead>
+      <tbody>
+      <tr>
+          {widgetRow} 
+	    </tr>
+      </tbody>
+      </table>)
+  }
+  else {
     return <h3> unknown argtype </h3>
   }
 }
 
+
+//@ts-ignore
+export const CommandAdder = ({column, addCommandCb}) => {
+  //@ts-ignore
+  const [commandName, setCommand] = useState(_.keys(CommandDefaults)[0])
+  const setCommandShim = (event:any) => setCommand(event.target.value)
+  const addCommand = () => {
+    const defaultCommand = CommandDefaults[commandName]
+    addCommandCb(replaceInArr(defaultCommand, "col", column))
+  }
+  return (<div>
+    <button onClick={addCommand}>Add</button>
+    <fieldset>
+    <span> Column: {column}</span>
+      <label> Command Name </label>
+      <select defaultValue={commandName} onChange={setCommandShim}>
+      //@ts-ignore
+    {_.keys(CommandDefaults).map((optionVal:any) => <option key={optionVal} value={optionVal}>{optionVal}</option>)}
+	</select>
+    </fieldset>
+    </div>)
+}
+
+
+
+/*
+    <ArgGetter argProps={CommandPatterns['fillna'][0]} val={3} setter={nullSetter} columns={[]} />
+    <ArgGetter argProps={CommandPatterns['resample'][0]} val={'daily'} setter={nullSetter} columns={[]} />
+
+  */
 //@ts-ignore
 export const CommandDetailHarness = () => {
       const activeCommand = bakedCommands[0]
   return (<div>
     <CommandDetail command={activeCommand} setCommand={nullSetter} deleteCB={nullSetter}/> 
-    <ArgGetter argProps={CommandPatterns['fillna'][0]} val={3} setter={nullSetter} />
-    <ArgGetter argProps={CommandPatterns['resample'][0]} val={'daily'} setter={nullSetter} />
     </div>)
 }
