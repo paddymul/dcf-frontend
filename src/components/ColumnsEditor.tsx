@@ -217,10 +217,9 @@ export function ColumnsEditor({ df }) {
 
   const [commands, setCommands] = useState(bakedCommands)
   const allColumns = df.schema.fields.map((field:any) => field.name)
-    //<ColumnList  fullProps={fullProps} deepSet={deepSetColumnProps} /> 
   return (<div className="columns-editor" style={{width:'100%',    }}>
     <CommandViewer commands={commands} setCommands={setCommands} 
-	  activeColumn={'new-column2'}
+	  activeColumn={'stoptime'}
 	  allColumns={allColumns} />
 
 	      <DependentTabs filledCommands={commands}/>
