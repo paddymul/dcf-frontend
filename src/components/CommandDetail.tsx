@@ -5,6 +5,15 @@ import { sym, bakedCommands } from './CommandUtils'
 
 const nullSetter = ()=> 5
 
+const replaceInArr = (arr:any[], old:any, subst:any) => {
+  return arr.map((item:any) => item === old ? subst : item)
+}
+
+const replaceAtIdx = (arr:any[], idx:number, subst:any) => {
+  return arr.map((item:any, innerIdx:number) => innerIdx === idx? subst : item)
+}
+
+
 //@ts-ignore
 export const CommandDetail = ({command, setCommand, deleteCB}) => {
   const commandName = command[0]['symbol']
@@ -22,12 +31,35 @@ export const CommandDetail = ({command, setCommand, deleteCB}) => {
       console.log("newCommand", newCommand)
       setCommand(newCommand)
     }
+    const fullPattern = pattern as ActualArg[]
     return (<div>
-      <ArgGetter argProps={pattern[0]} val={val} setter={valSetter} />
+      <ArgGetters command={command} fullPattern={fullPattern} setCommand={setCommand}/>
       <button onClick={deleteCB}>X</button>
       </div>)
   }
   return <h2></h2>
+}
+
+//@ts-ignore
+export const ArgGetters = (
+  {command, fullPattern, setCommand}:
+  {command:any, fullPattern:ActualArg[], setCommand:any}) => {
+
+    const makeArgGetter = (pattern:ActualArg) => {
+      const idx = pattern[0]
+    
+      const val = command[idx]
+      const valSetter = (newVal:any) => {
+	const newCommand = replaceAtIdx(command, idx, newVal)
+	console.log("newCommand", newCommand)
+	setCommand(newCommand)
+      }
+      return (<ArgGetter argProps={pattern} val={val} setter={valSetter} />)
+    }
+
+    return (<div className={"argGetters"}>
+      {fullPattern.map(makeArgGetter)}
+	    </div>)
 }
 
 
@@ -39,12 +71,16 @@ type TypeSpec =    [number, string, 'type',       'integer' | 'float' | 'string'
 type EnumSpec =    [number, string, 'enum',       string[]]
 type ColEnumSpec = [number, string, 'colEnum',    string[]]
 type NoArgs = null
+type ActualArg = TypeSpec | EnumSpec | ColEnumSpec
 type ArgSpec = TypeSpec | EnumSpec | ColEnumSpec | NoArgs
+
+
 
 const CommandPatterns:Record<string, ArgSpec[]> = {
   "dropcol":[null],
   "fillna":[[3, 'fillVal', 'type', 'integer']],
-  "resample":[[3, 'frequency', 'enum', ['daily', 'weekly', 'monthly']]],
+  "resample":[[3, 'frequency', 'enum', ['daily', 'weekly', 'monthly']],
+	      [4, 'colMap', 'enum', ['daily', 'weekly', 'monthly']]]
 }
 
 const CommandDefaults:Record<string, any> = {
@@ -53,9 +89,6 @@ const CommandDefaults:Record<string, any> = {
   "resample": [sym("resample"), sym('df'), 'col', 'monthly']
 }
 
-const replaceInArr = (arr:any[], old:any, subst:any) => {
-  return arr.map((item:any) => item === old ? subst : item)
-}
 
 //@ts-ignore
 export const CommandAdder = ({column, addCommandCb}) => {
