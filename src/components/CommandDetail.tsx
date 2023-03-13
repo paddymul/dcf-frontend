@@ -25,12 +25,6 @@ export const CommandDetail = ({command, setCommand, deleteCB}) => {
   } else if (_.isEqual(pattern, [null])) {
     return <div><h2>no arguments</h2><button onClick={deleteCB}>X</button></div>
   } else {
-    const val = command[3]
-    const valSetter = (newVal:any) => {
-      const newCommand = [command[0], command[1], command[2], newVal];
-      console.log("newCommand", newCommand)
-      setCommand(newCommand)
-    }
     const fullPattern = pattern as ActualArg[]
     return (<div>
       <ArgGetters command={command} fullPattern={fullPattern} setCommand={setCommand}/>
@@ -44,10 +38,8 @@ export const CommandDetail = ({command, setCommand, deleteCB}) => {
 export const ArgGetters = (
   {command, fullPattern, setCommand}:
   {command:any, fullPattern:ActualArg[], setCommand:any}) => {
-
     const makeArgGetter = (pattern:ActualArg) => {
       const idx = pattern[0]
-    
       const val = command[idx]
       const valSetter = (newVal:any) => {
 	const newCommand = replaceAtIdx(command, idx, newVal)
@@ -56,7 +48,6 @@ export const ArgGetters = (
       }
       return (<ArgGetter argProps={pattern} val={val} setter={valSetter} />)
     }
-
     return (<div className={"argGetters"}>
       {fullPattern.map(makeArgGetter)}
 	    </div>)
