@@ -118,7 +118,7 @@ export function DependentTabs({ filledCommands }) {
 
 //@ts-ignore
 export function ColumnsEditor(
-  { df, activeColumn }:{df:any, activeColumn?:string} =
+  { df, activeColumn }:{df:any, activeColumn:string} =
     {df:{}, activeColumn:'stoptime'}) {
   const schema = df.schema;
   const [commands, setCommands] = useState([])

@@ -15,18 +15,18 @@ export function DCFCell() {
      	        requestDf('http://localhost:5000/dcf/df/1?slice_end=50',
 		setOrigDf)
  }, []);
-        return (
-	
-	    <div className="dcf-root flex flex-col" style={{width:'100%', height:"100%"}}>
-	        <h1 style={{fontSize:"1.25rem", margin:"5px", textAlign:"left"}}>Data Cleaning Framework </h1>
-	        <div className="orig-df flex flex-row"
-		    style={{height:"250px", overflow:"hidden"}}>
-                    <DFViewer df={origDf} />
-		</div>
-	        <ColumnsEditor  df={origDf} />
-	    </div>
-        );
 
+  const [activeCol, setActiveCol] = useState('stoptime')
+  return (
+    <div className="dcf-root flex flex-col" style={{width:'100%', height:"100%"}}>
+      <h1 style={{fontSize:"1.25rem", margin:"5px", textAlign:"left"}}>Data Cleaning Framework </h1>
+      <div className="orig-df flex flex-row"
+    style={{height:"250px", overflow:"hidden"}}>
+      <DFViewer df={origDf} setActiveCol={setActiveCol} />
+    </div>
+      <ColumnsEditor  df={origDf} activeColumn={activeCol} />
+      </div>
+  );
 }
 
 

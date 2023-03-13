@@ -9,7 +9,7 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
   const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
     const name = element[0]['symbol']
     const key =  name+index.toString()
-    const column = {key, name}
+    const column = {key, name, width:40}
     return column
   })
 
