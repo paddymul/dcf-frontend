@@ -20,7 +20,7 @@ const replaceAtKey = (obj:Record<string, any>, key:string, subst:any) => {
 }
 
 
-const objWithoutNull = (obj:Record<string, any>) =>
+const objWithoutNull = (obj:Record<string, any>, extraStrips:any[]=[]) =>
   _.pickBy(obj, (x) => ![null, undefined].includes(x))
 
 
@@ -78,7 +78,7 @@ const CommandPatterns:Record<string, ArgSpec[]> = {
   "dropcol":[null],
   "fillna":[[3, 'fillVal', 'type', 'integer']],
   "resample":[[3, 'frequency', 'enum', ['daily', 'weekly', 'monthly']],
-	      [4, 'colMap', 'colEnum', ['sum', 'mean', 'count']]]
+	      [4, 'colMap', 'colEnum', ['null', 'sum', 'mean', 'count']]]
 }
 
 const CommandDefaults:Record<string, any> = {
@@ -128,7 +128,7 @@ const ArgGetter = (
       const colSetter = (event:any) => {
 	const newColVal = event.target.value
 	const updatedColDict = replaceAtKey(val, colName, newColVal)
-	setter(updatedColDict)
+	setter(objWithoutNull(updatedColDict, ['null']))
       }
       const colVal = _.get(val, colName, 'null')
       return (<td><select defaultValue={colVal} onChange={colSetter}>
