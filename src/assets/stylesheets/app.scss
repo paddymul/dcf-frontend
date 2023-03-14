@@ -125,11 +125,13 @@ html,body
 
 
 .command-viewer {
+    border:1px solid red;
     .command-box {
 	display:flex;
 	h4 {
-	    width:150px;
+	    width:250px;
 	    font-size:1em;
+	    border:1px orange;
 		  
 	}
 	div {
@@ -140,4 +142,4 @@ html,body
 	    
 }
 
-.asdf {background:red}
+.activeCol {background:gray}

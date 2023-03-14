@@ -42,7 +42,7 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
   const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
     const name = element[0]['symbol']
     const key =  name+index.toString()
-    const column = {key, name, width:20, maxWidth:60, cellClass: "asdf"}
+    const column = {key, name, width:20, maxWidth:60}
     return column
   })
 
@@ -85,7 +85,7 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
   return (<div className="command-viewer">
     <div className="command-box">
     <h4> Commands </h4>
-    <DataGrid style={{width:"800px", height:"100px"}}
+    <DataGrid style={{width:"1200px", height:"80px"}}
         //@ts-ignore
         columns={columns}
         rows={rows}

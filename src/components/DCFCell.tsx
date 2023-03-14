@@ -22,7 +22,7 @@ export function DCFCell() {
       <h1 style={{fontSize:"1.25rem", margin:"5px", textAlign:"left"}}>Data Cleaning Framework </h1>
       <div className="orig-df flex flex-row"
     style={{height:"250px", overflow:"hidden"}}>
-      <DFViewer df={origDf} setActiveCol={setActiveCol} />
+      <DFViewer df={origDf} activeCol={activeCol} setActiveCol={setActiveCol} />
     </div>
       <ColumnsEditor  df={origDf} activeColumn={activeCol} />
       </div>
