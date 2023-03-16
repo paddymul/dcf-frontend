@@ -37,8 +37,9 @@ export const CommandDetail = ({command, setCommand, deleteCB, columns}) => {
   } else {
     const fullPattern = pattern as ActualArg[]
     return (<div className="command-detail">
-      <ArgGetters command={command} fullPattern={fullPattern} setCommand={setCommand} columns={columns}/>
-      <button onClick={deleteCB}>X</button>
+      <ArgGetters command={command} fullPattern={fullPattern} setCommand={setCommand} columns={columns}
+	    deleteCB={deleteCB}
+      />
       </div>)
   }
   return <h2></h2>
@@ -46,9 +47,9 @@ export const CommandDetail = ({command, setCommand, deleteCB, columns}) => {
 
 //@ts-ignore
 export const ArgGetters = (
-  {command, fullPattern, setCommand, columns}:
+  {command, fullPattern, setCommand, columns, deleteCB}:
   {command:any, fullPattern:ActualArg[], setCommand:any
-   columns:string[]}) => {
+   columns:string[], deleteCB:any}) => {
     const makeArgGetter = (pattern:ActualArg) => {
       const idx = pattern[0]
       const val = command[idx]
@@ -61,6 +62,7 @@ export const ArgGetters = (
 	      columns={columns} />)
     }
     return (<div className="arg-getters">
+      <button onClick={deleteCB}>X</button>
       {fullPattern.map(makeArgGetter)}
 	    </div>)
 }
@@ -141,7 +143,7 @@ const ArgGetter = (
     })
 				  
     
-    return (<table>
+    return (<div className="col-enum"><table>
       <thead><tr>
       {columns.map((colName) => (<th>{colName}</th>))}
 	    </tr>
@@ -151,7 +153,9 @@ const ArgGetter = (
           {widgetRow} 
 	    </tr>
       </tbody>
-      </table>)
+      </table>
+      </div>
+      )
   }
   else {
     return <h3> unknown argtype </h3>
@@ -162,21 +166,6 @@ const ArgGetter = (
 //@ts-ignore
 export const CommandAdder = ({column, addCommandCb}) => {
   //@ts-ignore
-  const [commandName, setCommand] = useState(_.keys(CommandDefaults)[0])
-  const setCommandShim = (event:any) => setCommand(event.target.value)
-/*
-      <select defaultValue={commandName} onChange={setCommandShim}>
-      //@ts-ignore
-    {_.keys(CommandDefaults).map((optionVal:any) => <option key={optionVal} value={optionVal}>{optionVal}</option>)}
-	</select>
-	*/
-
-
-  const addCommand = () => {
-    const defaultCommand = CommandDefaults[commandName]
-    addCommandCb(replaceInArr(defaultCommand, "col", column))
-  }
-
   const addCommandByName = (localCommandName:string) => {
     return () => {
       const defaultCommand = CommandDefaults[localCommandName]
@@ -184,14 +173,7 @@ export const CommandAdder = ({column, addCommandCb}) => {
     }
   }
 
-  const setCommandViaButton = (commandName:string) => {
-    const retFunc = () => {
-      setCommand(commandName)
-    }
-    return retFunc
-  }
   return (<div className="command-adder">
-    <button onClick={addCommand}>Add</button>
     <fieldset>
     <button> Column: {column}</button>
       <label> Command Name </label>

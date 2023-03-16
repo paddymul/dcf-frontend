@@ -80,10 +80,15 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
 
   const addCommand = (newCommand:any) => {
     setCommands([...commands, newCommand])
+    setActiveCommand(newCommand)
   }
 
+  const [activeCommand, setActiveCommand] = useState(undefined)
+
   return (<div className="command-viewer">
+    <CommandAdder column={activeColumn} addCommandCb={addCommand} />
     <div className="command-box">
+
     <h4> Commands </h4>
     <DataGrid style={{width:"1200px", height:"80px"}}
         //@ts-ignore
@@ -106,7 +111,7 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
       columns={allColumns}
       
       /> }
-    <CommandAdder column={activeColumn} addCommandCb={addCommand} />
+
 
 	  </div>)
 }
