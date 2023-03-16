@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect, useReducer, useRef, useLayoutEffect } from "react";
 import _ from 'lodash';
 import DataGrid from 'react-data-grid';
-import { bakedCommands } from './CommandUtils'
+import { bakedCommands, defaultCommandPatterns } from './CommandUtils'
 import { CommandDetail, CommandAdder } from './CommandDetail'
 //@ts-ignore
 export const CommandViewer = ({commands, setCommands, activeColumn, allColumns}) => {
@@ -85,35 +85,33 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
 
   const [activeCommand, setActiveCommand] = useState(undefined)
 
+  const [commandPatterns, setCommandPatterns ] = useState(defaultCommandPatterns)
+
   return (<div className="command-viewer">
     <CommandAdder column={activeColumn} addCommandCb={addCommand} />
-    <div className="command-box">
-
-    <h4> Commands </h4>
-    <DataGrid style={{width:"1200px", height:"80px"}}
-        //@ts-ignore
-        columns={columns}
-        rows={rows}
-        onCellClick={({ row, column }:any, event:any) => {
-	  console.log("column", column.key);
-          // add to generated commands
-	  const tempRow = _.clone(rows[0])
-	  const oldVal = tempRow[column.key]
-	  tempRow[column.key] = oldVal == "false" ? "true": "false"
+      <div className="command-box">
+        <h4> Commands </h4>
+        <DataGrid style={{width:"1200px", height:"80px"}}
           //@ts-ignore
-	  setActiveKey(column.key)
-        }}
-    />
-    </div>
-    { activeKey && <CommandDetail command={commandDict[activeKey]}
-                                  setCommand={getSetCommand(activeKey)}
-                                  deleteCB={getDeleteCommand(activeKey)}
-      columns={allColumns}
-      
-      /> }
-
-
-	  </div>)
+          columns={columns}
+          rows={rows}
+          onCellClick={({ row, column }:any, event:any) => {
+            console.log("column", column.key);
+            // add to generated commands
+	    const tempRow = _.clone(rows[0])
+	    const oldVal = tempRow[column.key]
+	    tempRow[column.key] = oldVal == "false" ? "true": "false"
+            //@ts-ignore
+	    setActiveKey(column.key)
+          }}/>
+      </div>
+      { activeKey && <CommandDetail command={commandDict[activeKey]}
+                                    setCommand={getSetCommand(activeKey)}
+                                    deleteCB={getDeleteCommand(activeKey)}
+	                            columns={allColumns}
+                                    commandPatterns={commandPatterns}   
+	/> }
+    </div>)
 }
 
 

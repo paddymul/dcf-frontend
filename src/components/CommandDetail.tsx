@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect, useReducer, useRef, useLayoutEffect } from "react";
 import _ from 'lodash';
 import DataGrid from 'react-data-grid';
-import { sym, bakedCommands } from './CommandUtils'
+import { sym, bakedCommands, ActualArg, ArgSpec, defaultCommandPatterns } from './CommandUtils'
 
 const nullSetter = ()=> 5
 
@@ -24,10 +24,18 @@ const objWithoutNull = (obj:Record<string, any>, extraStrips:any[]=[]) =>
   _.pickBy(obj, (x) => ![null, undefined].includes(x))
 
 
+
+
+const CommandDefaults:Record<string, any> = {
+  "dropcol":  [sym("dropcol"), sym("df"), "col"],
+  "fillna":   [sym("fillna"), sym("df"), "col", 8],
+  "resample": [sym("resample"), sym('df'), 'col', 'monthly', {}]
+}
+
 //@ts-ignore
-export const CommandDetail = ({command, setCommand, deleteCB, columns}) => {
+export const CommandDetail = ({command, setCommand, deleteCB, columns, commandPatterns}) => {
   const commandName = command[0]['symbol']
-  const pattern = CommandPatterns[commandName]
+  const pattern = commandPatterns[commandName]
   
   if (! _.isArray(pattern)){
     //we shouldn't get here
@@ -67,28 +75,6 @@ export const ArgGetters = (
 	    </div>)
 }
 
-const UnknownCommand = [sym("nonexistent"), sym('df'), 'col1']
-
-const ArgNames =   ['Idx', 'label', 'specName',   'extraSpecArgs']
-type TypeSpec =    [number, string, 'type',       'integer' | 'float' | 'string']
-type EnumSpec =    [number, string, 'enum',       string[]]
-type ColEnumSpec = [number, string, 'colEnum',    string[]]
-type NoArgs = null
-type ActualArg = TypeSpec | EnumSpec | ColEnumSpec
-type ArgSpec = TypeSpec | EnumSpec | ColEnumSpec | NoArgs
-
-const CommandPatterns:Record<string, ArgSpec[]> = {
-  "dropcol":[null],
-  "fillna":[[3, 'fillVal', 'type', 'integer']],
-  "resample":[[3, 'frequency', 'enum', ['daily', 'weekly', 'monthly']],
-	      [4, 'colMap', 'colEnum', ['null', 'sum', 'mean', 'count']]]
-}
-
-const CommandDefaults:Record<string, any> = {
-  "dropcol":  [sym("dropcol"), sym("df"), "col"],
-  "fillna":   [sym("fillna"), sym("df"), "col", 8],
-  "resample": [sym("resample"), sym('df'), 'col', 'monthly', {}]
-}
 
 //@ts-ignore
 const ArgGetter = (
@@ -99,8 +85,6 @@ const ArgGetter = (
   const [argPos, label, argType, lastArg] = argProps
 
   const defaultShim = (event:any) => setter(event.target.value)
-  //type should actually be lined up with the column somehow, punting for now
-
   if (argType === 'enum') {
     return (<fieldset>
       <label> {label} </label>
@@ -126,8 +110,6 @@ const ArgGetter = (
   }
   else if (argType === 'colEnum') {
     const widgetRow = columns.map((colName:string) => {
-
-    //const widgetRow = columns.map((colName:any) => {
       const colSetter = (event:any) => {
 	const newColVal = event.target.value
 	const updatedColDict = replaceAtKey(val, colName, newColVal)
@@ -141,7 +123,6 @@ const ArgGetter = (
 	</td>
 	)
     })
-				  
     
     return (<div className="col-enum"><table>
       <thead><tr>
@@ -183,18 +164,18 @@ export const CommandAdder = ({column, addCommandCb}) => {
     </div>)
 }
 
-
-
-/*
-    <ArgGetter argProps={CommandPatterns['fillna'][0]} val={3} setter={nullSetter} columns={[]} />
-    <ArgGetter argProps={CommandPatterns['resample'][0]} val={'daily'} setter={nullSetter} columns={[]} />
-
-  */
 //@ts-ignore
 export const CommandDetailHarness = () => {
       const activeCommand = bakedCommands[0]
   return (<div>
     <CommandDetail command={activeCommand} setCommand={nullSetter} deleteCB={nullSetter}
-	  columns={['foo', 'bar', 'baz']}/> 
+	  columns={['foo', 'bar', 'baz']}
+	  commandPatterns={defaultCommandPatterns}
+	  /> 
     </div>)
 }
+
+/*
+
+
+  */
