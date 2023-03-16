@@ -86,6 +86,16 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
   const [activeCommand, setActiveCommand] = useState(undefined)
 
   const [commandConfig, setCommandConfig ] = useState(defaultCommandConfig)
+
+  useEffect(() => {
+    fetch('http://localhost:5000/dcf/command-config')
+      .then(async (response) => {
+	console.log("command-config response", response);
+	setCommandConfig(await response.json())
+      })
+  }, []);
+
+
   const {commandPatterns, commandDefaults} = commandConfig;
 
   return (<div className="command-viewer">
