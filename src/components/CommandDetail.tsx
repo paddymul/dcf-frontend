@@ -33,10 +33,10 @@ export const CommandDetail = ({command, setCommand, deleteCB, columns}) => {
     //we shouldn't get here
     return <h2>unknown command {commandName}</h2>
   } else if (_.isEqual(pattern, [null])) {
-    return <div><h2>no arguments</h2><button onClick={deleteCB}>X</button></div>
+    return <div className="command-detail"><h4>no arguments</h4><button onClick={deleteCB}>X</button></div>
   } else {
     const fullPattern = pattern as ActualArg[]
-    return (<div>
+    return (<div className="command-detail">
       <ArgGetters command={command} fullPattern={fullPattern} setCommand={setCommand} columns={columns}/>
       <button onClick={deleteCB}>X</button>
       </div>)
@@ -60,7 +60,7 @@ export const ArgGetters = (
       return (<ArgGetter argProps={pattern} val={val} setter={valSetter}
 	      columns={columns} />)
     }
-    return (<div className={"argGetters"}>
+    return (<div className="arg-getters">
       {fullPattern.map(makeArgGetter)}
 	    </div>)
 }
@@ -164,19 +164,39 @@ export const CommandAdder = ({column, addCommandCb}) => {
   //@ts-ignore
   const [commandName, setCommand] = useState(_.keys(CommandDefaults)[0])
   const setCommandShim = (event:any) => setCommand(event.target.value)
-  const addCommand = () => {
-    const defaultCommand = CommandDefaults[commandName]
-    addCommandCb(replaceInArr(defaultCommand, "col", column))
-  }
-  return (<div>
-    <button onClick={addCommand}>Add</button>
-    <fieldset>
-    <span> Column: {column}</span>
-      <label> Command Name </label>
+/*
       <select defaultValue={commandName} onChange={setCommandShim}>
       //@ts-ignore
     {_.keys(CommandDefaults).map((optionVal:any) => <option key={optionVal} value={optionVal}>{optionVal}</option>)}
 	</select>
+	*/
+
+
+  const addCommand = () => {
+    const defaultCommand = CommandDefaults[commandName]
+    addCommandCb(replaceInArr(defaultCommand, "col", column))
+  }
+
+  const addCommandByName = (localCommandName:string) => {
+    return () => {
+      const defaultCommand = CommandDefaults[localCommandName]
+      addCommandCb(replaceInArr(defaultCommand, "col", column))
+    }
+  }
+
+  const setCommandViaButton = (commandName:string) => {
+    const retFunc = () => {
+      setCommand(commandName)
+    }
+    return retFunc
+  }
+  return (<div className="command-adder">
+    <button onClick={addCommand}>Add</button>
+    <fieldset>
+    <button> Column: {column}</button>
+      <label> Command Name </label>
+	  {_.keys(CommandDefaults).map(
+	    (optionVal:any) => <button onClick={addCommandByName(optionVal)}> {optionVal} </button> )}
     </fieldset>
     </div>)
 }

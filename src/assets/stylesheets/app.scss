@@ -126,8 +126,11 @@ html,body
 
 .command-viewer {
     border:1px solid red;
+    height:550px;
     .command-box {
 	display:flex;
+	height:80px;
+	border:1px solid green;
 	h4 {
 	    width:250px;
 	    font-size:1em;
@@ -139,7 +142,26 @@ html,body
 	    overflow-x:scroll
 	}
     }
-	    
+
 }
 
+.command-detail {
+    border: 4px solid teal;
+    height: 300px;
+    .arg-getters {
+	height:200px;
+	border:2px solid black;
+    }
+}
+.command-adder {
+    border:2px solid brown;
+    height:100px
+    button {
+	float:left;
+    }
+}
+
+
+
 .activeCol {background:gray}
+
