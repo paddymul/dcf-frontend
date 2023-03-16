@@ -27,3 +27,14 @@ export const defaultCommandPatterns:Record<string, ArgSpec[]> = {
   "resample":[[3, 'frequency', 'enum', ['daily', 'weekly', 'monthly']],
 	      [4, 'colMap', 'colEnum', ['null', 'sum', 'mean', 'count']]]
 }
+
+export const commandDefaults:Record<string, any> = {
+  "dropcol":  [sym("dropcol"), sym("df"), "col"],
+  "fillna":   [sym("fillna"), sym("df"), "col", 8],
+  "resample": [sym("resample"), sym('df'), 'col', 'monthly', {}]
+}
+
+export const defaultCommandConfig = {
+  commandPatterns:defaultCommandPatterns,
+  commandDefaults
+}

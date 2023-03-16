@@ -26,12 +26,6 @@ const objWithoutNull = (obj:Record<string, any>, extraStrips:any[]=[]) =>
 
 
 
-const CommandDefaults:Record<string, any> = {
-  "dropcol":  [sym("dropcol"), sym("df"), "col"],
-  "fillna":   [sym("fillna"), sym("df"), "col", 8],
-  "resample": [sym("resample"), sym('df'), 'col', 'monthly', {}]
-}
-
 //@ts-ignore
 export const CommandDetail = ({command, setCommand, deleteCB, columns, commandPatterns}) => {
   const commandName = command[0]['symbol']
@@ -145,11 +139,11 @@ const ArgGetter = (
 
 
 //@ts-ignore
-export const CommandAdder = ({column, addCommandCb}) => {
+export const CommandAdder = ({column, addCommandCb, commandDefaults}) => {
   //@ts-ignore
   const addCommandByName = (localCommandName:string) => {
     return () => {
-      const defaultCommand = CommandDefaults[localCommandName]
+      const defaultCommand = commandDefaults[localCommandName]
       addCommandCb(replaceInArr(defaultCommand, "col", column))
     }
   }
@@ -158,7 +152,7 @@ export const CommandAdder = ({column, addCommandCb}) => {
     <fieldset>
     <button> Column: {column}</button>
       <label> Command Name </label>
-	  {_.keys(CommandDefaults).map(
+	  {_.keys(commandDefaults).map(
 	    (optionVal:any) => <button onClick={addCommandByName(optionVal)}> {optionVal} </button> )}
     </fieldset>
     </div>)

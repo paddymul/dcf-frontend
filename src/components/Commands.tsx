@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect, useReducer, useRef, useLayoutEffect } from "react";
 import _ from 'lodash';
 import DataGrid from 'react-data-grid';
-import { bakedCommands, defaultCommandPatterns } from './CommandUtils'
+import { bakedCommands, defaultCommandConfig } from './CommandUtils'
 import { CommandDetail, CommandAdder } from './CommandDetail'
 //@ts-ignore
 export const CommandViewer = ({commands, setCommands, activeColumn, allColumns}) => {
@@ -85,10 +85,11 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
 
   const [activeCommand, setActiveCommand] = useState(undefined)
 
-  const [commandPatterns, setCommandPatterns ] = useState(defaultCommandPatterns)
+  const [commandConfig, setCommandConfig ] = useState(defaultCommandConfig)
+  const {commandPatterns, commandDefaults} = commandConfig;
 
   return (<div className="command-viewer">
-    <CommandAdder column={activeColumn} addCommandCb={addCommand} />
+    <CommandAdder column={activeColumn} addCommandCb={addCommand} commandDefaults={commandDefaults} />
       <div className="command-box">
         <h4> Commands </h4>
         <DataGrid style={{width:"1200px", height:"80px"}}
