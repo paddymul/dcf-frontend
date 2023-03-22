@@ -45,10 +45,7 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
     return column
   })
 
-
-  //@ts-ignore
   const columns = getColumns(commands)
-
 
   function getSetCommand(key:any) {
     return (newCommand:any) => {
@@ -85,18 +82,15 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
     const newCommandArr = [...commands, newCommand]
     setCommands(newCommandArr)
     const newCommandKey = getColumns(newCommandArr)[newCommandArr.length-1].key
-    console.log("newCommand.key", newCommandKey)
     //@ts-ignore
     setActiveKey(newCommandKey)
   }
-
 
   const [commandConfig, setCommandConfig ] = useState(defaultCommandConfig)
 
   useEffect(() => {
     fetch('http://localhost:5000/dcf/command-config')
       .then(async (response) => {
-	console.log("command-config response", response);
 	setCommandConfig(await response.json())
       })
   }, []);
@@ -130,7 +124,6 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
 	/> }
     </div>)
 }
-
 
 export const Commands = ()=> {
   const [c, setC] = useState(bakedCommands)

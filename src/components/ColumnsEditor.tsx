@@ -80,7 +80,7 @@ export function TransformViewer({ filledCommands, style }) {
 
 //@ts-ignore
 export function DependentTabs({ filledCommands }) {
-  const [tab, _setTab] = useState('python')
+  const [tab, _setTab] = useState('df')
   const setTab = (tabName:string) => {
       const retFunc = (e:any) => {
         _setTab(tabName);
