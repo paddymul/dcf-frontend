@@ -38,13 +38,16 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
 
   const [activeKey, setActiveKey] = useState(null)
 
-  //@ts-ignore
-  const columns = _.map(Array.from(commands.entries()), ([index, element]) => {
+  const getColumns = (passedCommands:any[]) => _.map(Array.from(passedCommands.entries()), ([index, element]) => {
     const name = element[0]['symbol']
     const key =  name+index.toString()
     const column = {key, name, width:20, maxWidth:60}
     return column
   })
+
+
+  //@ts-ignore
+  const columns = getColumns(commands)
 
 
   function getSetCommand(key:any) {
@@ -79,11 +82,14 @@ export const CommandViewer = ({commands, setCommands, activeColumn, allColumns})
   }
 
   const addCommand = (newCommand:any) => {
-    setCommands([...commands, newCommand])
-    setActiveCommand(newCommand)
+    const newCommandArr = [...commands, newCommand]
+    setCommands(newCommandArr)
+    const newCommandKey = getColumns(newCommandArr)[newCommandArr.length-1].key
+    console.log("newCommand.key", newCommandKey)
+    //@ts-ignore
+    setActiveKey(newCommandKey)
   }
 
-  const [activeCommand, setActiveCommand] = useState(undefined)
 
   const [commandConfig, setCommandConfig ] = useState(defaultCommandConfig)
 
